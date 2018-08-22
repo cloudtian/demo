@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            .box-wrap {
+               border: 1px solid #ccc; 
+            }
+
+            .box {
+                min-width: 100px;
+                min-height: 100px;
+                margin: 10px 15px;
+                display: inline-block;
+            }
+
+            .box-wrap.rect .box, 
+            .box.square {
+                min-width: 200px;
+            }
+
+            .translucency-border {
+                background: aliceblue;
+                border: 10px solid hsla(0, 0%, 100%, .5);
+            }
+
+            .many-border {
+                background: yellowgreen;
+                box-shadow: 0 0 0 10px #655;
+            }
+            .many-border2 {
+                background: yellowgreen;
+                box-shadow: 0 0 0 10px #655, 
+                            0 0 0 15px deeppink,
+                            0 2px 5px 15px rgba(0,0,0.6);
+            }
+            .many-border3 {
+                background: yellowgreen;
+                border: 10px solid #655;
+                outline: 5px solid deeppink;
+            }
+            .many-border4 {
+                background: yellowgreen;
+                border: 10px solid #655;
+                outline: 5px dotted deeppink;
+                outline-offset: -8px;
+                border-radius: 5px;
+            }
+
+            .bg-pos {
+                background: url("../asset/img/ali.svg") no-repeat bottom right #58a;
+                background-position: right 20px bottom 10px;
+            }
+            .bg-pos2 {
+                padding: 10px;
+                background: url("../asset/img/ali.svg") no-repeat bottom right #58a;
+                background-origin: content-box;
+                /* 默认情况下background-position是以padding-box为准的，
+                * 通过设置background-origin:content-box，使得background-position属性中使用的边角关键字将会以内容区的边缘为基准
+                * （也就是说，此时背景图片距离边角的偏移量就跟内边距保持一致了）
+                */
+            }
+            .bg-pos3 {
+                background: url("../asset/img/ali.svg") no-repeat bottom right #58a;
+                background-position: calc(100% - 20px) calc(100% - 10px);
+            }
+
+
+            .something-meaningful {
+                background: #655;
+                padding: .8em;
+            }
+            .something-meaningful > div {
+                background: tan;
+                border-radius: .8em;
+                padding: 1em;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h6>半透明边框(hsla)</h6>
+        <div class="box-wrap">
+            <div class="box translucency-border"></div>
+        </div>
+        
+        <h6>多重边框(box-shadow,outline)</h6>
+        <div class="box-wrap">
+            <div class="box many-border"></div>
+            <div class="box many-border2"></div>
+            <div class="box many-border3"></div>
+            <div class="box many-border4"></div>
+        </div>
+       
+        <h6>背景定位(background-position,background-origin)</h6>
+        <div class="box-wrap rect">
+            <div class="box bg-pos">position</div>
+            <div class="box bg-pos2">origin</div>
+            <div class="box bg-pos3">calc</div>
+        </div>
+        
+        <h6>边框内圆角(background-position,background-origin)</h6>
+        <div class="box-wrap">
+            <div class="box border-radius something-meaningful">
+                <div>I have a nice subtle inner rounding, don't I look pretty ?</div>
+            </div>
+            <div class="box border-radius">some text</div>
+            <div class="box border-radius">origin</div>
+            <div class="box border-radius">calc</div>
+        </div>
+    </body>
+</html>
