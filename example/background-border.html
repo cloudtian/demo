@@ -95,6 +95,46 @@
                 */
             }
 
+            .streak-bg {
+                background: linear-gradient(#fb3 20%, #58a 80%);
+            }
+            .streak-bg2 {
+                background: linear-gradient(#fb3 50%, #58a 50%);
+                background-size: 100% 30px;
+            }
+            .streak-bg3 {
+                background: linear-gradient(#fb3 30%, #58a 0);
+                background-size: 100% 30px;
+                /* 如果把第二个色标的位置设置为0，那么它的位置就总是会被浏览器调整为前一个色标的位置值*/
+            }
+            .streak-bg4 {
+                background: linear-gradient(#fb3 33.3%, #58a 0, #58a 66.6%, yellowgreen 0);
+                background-size: 100% 45px;
+            }
+            .vertical-streak-bg {
+                background: linear-gradient(to right /* 或90deg */, #fb3 50%, #58a 0);
+                background-size: 30px 100%;
+            }
+            .diagonal-streak-bg {
+                background: linear-gradient(45deg, #fb3 50%, #58a 0);
+                background-size: 30px 30px;
+            }
+            .diagonal-streak-bg2 {
+                background: linear-gradient(45deg,
+                  #fb3 25%, #58a 0, #58a 50%,
+                  #fb3 0, #fb3 75%, #58a 0);
+                background-size: 30px 30px;
+            }
+            .diagonal-streak-bg3 {
+                background: repeating-linear-gradient(45deg, #fb3, #58a 30px);
+                /** 重复线性渐变，相当于
+                * background: linear-gradient(45deg,
+                * #fb3, #58a 30px
+                * #fb3 30px, #58a 60px
+                * #fb3 60px, #58a 90px
+                * #fb3 90px, #58a 120px, ...)
+                */
+            }
         </style>
     </head>
     <body>
@@ -126,5 +166,19 @@
             <div class="box border-radius2">one div(outline)</div>
             <div class="box border-radius3">one div(box-shadow)</div>
         </div>
+        
+        <h6>条纹背景(background-size)</h6>
+        <div class="box-wrap">
+            <div class="box streak-bg"></div>
+            等宽条纹<div class="box streak-bg2"></div>
+            不等宽条纹<div class="box streak-bg3"></div>
+            三种颜色的条纹<div class="box streak-bg4"></div>
+            垂直条纹<div class="box vertical-streak-bg"></div>
+            斜向条纹<div class="box diagonal-streak-bg"></div>
+            <div class="box diagonal-streak-bg2"></div>
+            <div class="box diagonal-streak-bg3"></div>
+        </div>
+
+        
     </body>
 </html>
