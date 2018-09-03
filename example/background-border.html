@@ -22,10 +22,12 @@
                 min-width: 200px;
             }
 
+
             .translucency-border {
                 background: aliceblue;
                 border: 10px solid hsla(0, 0%, 100%, .5);
             }
+
 
             .many-border {
                 background: yellowgreen;
@@ -49,6 +51,7 @@
                 outline-offset: -8px;
                 border-radius: 5px;
             }
+
 
             .bg-pos {
                 background: url("../asset/img/ali.svg") no-repeat bottom right #58a;
@@ -94,6 +97,7 @@
                 * 扩张半径需要比描边的宽度值小，且比(Math.sqrt(2) - 1)r大
                 */
             }
+
 
             .streak-bg {
                 background: linear-gradient(#fb3 20%, #58a 80%);
@@ -152,6 +156,22 @@
                     hsla(0,0%,100%,.1) 15px, 
                     transparent 0, transparent 30px);
             }
+
+            .complex-bg-grid {
+                background: white;
+                background-image: linear-gradient(90deg, rgba(200,0,0,.5) 50%, transparent 0),
+                                  linear-gradient(rgba(200,0,0,.5) 50%, transparent 0);
+                background-size: 30px 30px;
+            }
+            .complex-bg-grid2 {
+                background: #58a;
+                background-image: linear-gradient(white 1px, transparent 0),
+                                  linear-gradient(90deg, white 1px, transparent 0);
+                background-size: 30px 30px;
+            }
+            .complex-bg-grid3 {
+                
+            }
         </style>
     </head>
     <body>
@@ -198,6 +218,13 @@
             <div class="box diagonal-streak-bg5"></div>
             同色系条纹<div class="box tone-streak-bg"></div>
             <div class="box tone-streak-bg2"></div>
+        </div>
+
+        <h6>复杂的背景图案</h6>
+        <div class="box-wrap">
+            <div class="box complex-bg-grid"></div>
+            <div class="box complex-bg-grid2"></div>
+            <div class="box complex-bg-grid3"></div>
         </div>
 
         
