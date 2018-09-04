@@ -67,6 +67,10 @@
                 outline: 5px dotted deeppink;
                 outline-offset: -8px;
                 border-radius: 5px;
+                /*
+                outline只能设置一个，可以通过outline-offset来设置其偏移量。
+                正值表示往外偏移，负值表示往内偏移
+                */
             }
 
 
@@ -109,7 +113,7 @@
                 outline: .8em solid #655;
                 padding: .8em;
                 box-shadow: 0 0 0 .6em #655;
-                /* 描边不会跟着元素的圆角走（因而显示直角），但box-shadow会
+                /* 描边不会跟着元素的圆角走（因而显示直角），但box-shadow会。
                 * 用阴影来扩张值来填补空隙。
                 * 扩张半径需要比描边的宽度值小，且比(Math.sqrt(2) - 1)r大
                 */
@@ -118,6 +122,12 @@
 
             .streak-bg {
                 background: linear-gradient(#fb3 20%, #58a 80%);
+                /*
+                linear-gradient()用于创建一个表示两种或多种颜色线性渐变的图片。
+                其结果属于<gradient>数据类型，是一种特别的<image>数据类型。
+                <gradient>只能被用于<image>可以使用的地方。
+                因此，linear-gradient()并不适用于background-color以及类似的使用<color>数据类型的属性中。
+                */
             }
             .streak-bg2 {
                 background: linear-gradient(#fb3 50%, #58a 50%);
@@ -187,7 +197,81 @@
                 background-size: 30px 30px;
             }
             .complex-bg-grid3 {
-                
+                background: #58a;
+                background-image: 
+                    linear-gradient(white 2px, transparent 0),
+                    linear-gradient(90deg, white 2px, transparent 0),
+                    linear-gradient(hsla(0,0%,100%,.3) 1px, transparent 0),
+                    linear-gradient(90deg, hsla(0,0%,100%,.3) 1px, transparent 0);
+                background-size: 75px 75px, 75px 75px,
+                                 15px 15px, 15px 15px;
+            }
+            .complex-bg-dot {
+                background: #655;
+                background-image: radial-gradient(tan 30%, transparent 0);
+                background-size: 30px 30px;
+            }
+            .complex-bg-dot2 {
+                background: #655;
+                background-image: radial-gradient(tan 30%, transparent 0),
+                                  radial-gradient(tan 30%, transparent 0);
+                background-size: 30px 30px;
+                background-position: 0 0, 15px 15px;
+                /*
+                如果使用预处理器，可以使用mixin:
+                @mixin polka($size, $dot, $base, $accent) {
+                    background: $base;
+                    background-image: radial-gradient($accent $dot, transparent 0),
+                                      radial-gradient($accent $dot, transparent 0);
+                    background-size: $size $size;
+                    background-position: 0 0, $size/2 $size/2;
+                }
+                @include polka(30px, 30%, #655, tan);
+                */
+            }
+            .complex-bg-chessboard {
+                background: #eee;
+                background-image: linear-gradient(45deg, #bbb 25%, transparent 0),
+                                  linear-gradient(45deg, transparent 75%, #bbb 0),
+                                  linear-gradient(45deg, #bbb 25%, transparent 0),
+                                  linear-gradient(45deg, transparent 75%, #bbb 0);
+                background-size: 30px 30px;
+                background-position: 0 0, 15px 15px, 15px 15px, 30px 30px;
+                /*窍门：用两个直角三角形来拼合出我们想要的方块*/
+            }
+            /*合并上面的两层渐变，将4层渐变变成2层*/
+            .complex-bg-chessboard2 {
+                background: #eee;
+                background-image: linear-gradient(45deg, rgba(0,0,0,.25) 25%, transparent 0, transparent 75%, rgba(0,0,0,.25) 0),
+                                  linear-gradient(45deg, rgba(0,0,0,.25) 25%, transparent 0, transparent 75%, rgba(0,0,0,.25) 0);
+                background-position: 0 0, 15px 15px;
+                background-size: 30px 30px;
+                /*如果使用sass预处理器的mixin:
+                @mixin checkerboard($size, $base, $accent: rgba(0,0,0,.25)) {
+                    background: $base;
+                    background-image: linear-gradient(45deg, $accent 25%, transparent 0, transparent 75%, $accent 0),
+                                      linear-gradient(45deg, $accent 25%, transparent 0, transparent 75%, $accent 0);
+                    background-position: 0 0, $size $size;
+                    background-size: 2*$size 2*$size;
+                }
+                @include checkerboard(15px, #58a, tan);
+                如果使用svg实现：
+                见asset/background-border/chessboard.svg
+                */
+            }
+            .complex-bg-chessboard3 {
+                background: #eee url("../asset/background-border/chessboard.svg");   
+                background-size: 30px 30px;
+            }
+            .complex-bg-chessboard4 {
+                background: #eee url('data:image/svg+xml,\
+                <svg xmlns="http://www.w3.org/2000/svg" \
+                        width="100" height="100" fill-opacity=".25">\
+                    <rect x="50" width="50" height="50"></rect>\
+                    <rect y="50" width="50" height="50"></rect>\
+                </svg>');
+                background-size: 30px 30px;
+                /*如果出于可读性考虑，需要把一句CSS代码打断为多行，只需要用反斜杠来转义每行末尾的换行就可以了。*/
             }
         </style>
     </head>
@@ -239,9 +323,15 @@
 
         <h6>复杂的背景图案</h6>
         <div class="box-wrap">
-            <div class="box complex-bg-grid"></div>
+            网格<div class="box complex-bg-grid"></div>
             <div class="box complex-bg-grid2"></div>
             <div class="box complex-bg-grid3"></div>
+            波点<div class="box complex-bg-dot"></div>
+            <div class="box complex-bg-dot2"></div>
+            棋盘<div class="box complex-bg-chessboard"></div>
+            <div class="box complex-bg-chessboard2"></div>
+            svg<div class="box complex-bg-chessboard3"></div>
+            svg内嵌<div class="box complex-bg-chessboard4"></div>
         </div>
 
         
