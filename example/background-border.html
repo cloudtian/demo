@@ -273,6 +273,32 @@
                 background-size: 30px 30px;
                 /*如果出于可读性考虑，需要把一句CSS代码打断为多行，只需要用反斜杠来转义每行末尾的换行就可以了。*/
             }
+
+
+            .random-bg {
+                background: linear-gradient(90deg, #fb3 15%, #655 0, #655 40%, 
+                                #ab4 0, #ab4 65%, hsl(20, 40%, 90%) 0);
+                background-size: 80px 100%;           
+            }
+            .random-bg2 {
+                background: hsl(20, 40%, 90%);
+                background-image: 
+                    linear-gradient(90deg, #fb3 10px, transparent 0),
+                    linear-gradient(90deg, #ab4 20px, transparent 0),
+                    linear-gradient(90deg, #655 20px, transparent 0);
+                background-size: 80px 100%, 60px 100%, 40px 100%;
+                /*这里贴片的尺寸实际上就是所有backgrond-size的最小公倍数（80，60，40的最小公倍数正是240）
+                贴片：可指各个渐变图案中的重复单元，还泛指多层渐变合成的最终图案中可感知的重复单元。
+                想让随机性更加真实，需要把贴片的尺寸最大化。为了让最小公倍数最大化，需要选择“相对质数”
+                background: hsl(20, 40%, 90%);
+                background-image: 
+                    linear-gradient(90deg, #fb3 11px, transparent 0),
+                    linear-gradient(90deg, #ab4 23px, transparent 0),
+                    linear-gradient(90deg, #655 41px, transparent 0);
+                background-size: 41px 100%, 61px 100%, 83px 100%;
+                */
+                /* 蝉原则：通过质数来增加随机真实性的想法 */
+            }
         </style>
     </head>
     <body>
@@ -332,6 +358,12 @@
             <div class="box complex-bg-chessboard2"></div>
             svg<div class="box complex-bg-chessboard3"></div>
             svg内嵌<div class="box complex-bg-chessboard4"></div>
+        </div>
+
+        <h6>伪随机背景</h6>
+        <div class="box-wrap">
+            <div class="box random-bg"></div>
+            <div class="box random-bg2"></div>
         </div>
 
         
