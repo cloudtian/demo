@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./common.css" />
+        <style>
+            .ellipse {
+                background-color: tan;
+                border-radius: 50%;
+            }
+            .ellipse2 {
+                background-color: tan;
+                border-radius: 50% / 100% 100% 0 0;
+                /*
+                border-radius：水平半径 / 垂直半径
+                top-left top-right bottom-left bottom-right
+                */
+            }
+            .ellipse3 {
+                background-color: tan;
+                border-radius: 100% 0 0 100% / 50%; 
+            }
+            .ellipse4 {
+                background-color: tan;
+                border-radius: 0 100% 100% 0 / 50%; 
+            }
+            .ellipse5 {
+                background-color: tan;
+                border-radius: 50% / 0 0 100% 100%; 
+            }
+            .ellipse6 {
+                min-height: 50px;
+                background-color: tan;
+                border-radius: 100% 0 0 0; 
+            }
+            .candy-pic {
+                background: url("../asset/shape/candy.png") 0 / 100% no-repeat;
+            }
+
+
+            
+        </style>
+    </head>
+    <body>
+        
+        <h6>自适应的椭圆(border-radius)</h6>
+        <div class="box-wrap">
+            <div class="box rect ellipse"></div>
+            半椭圆<div class="box ellipse2"></div>
+            <div class="box ellipse3"></div>
+            <div class="box ellipse4"></div>
+            <div class="box ellipse5"></div>
+            四分之一<div class="box ellipse6"></div>
+            糖果按钮<a href="http://simurai.com/archive/buttons/" 
+            title="点击查看糖果按钮" target="_blank" class="box candy-pic"></a>            
+        </div>
+
+
+    </body>
+</html>
