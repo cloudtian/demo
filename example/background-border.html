@@ -1,28 +1,7 @@
 <html>
     <head>
+        <link rel="stylesheet" href="./common.css"/>
         <style>
-            * {
-                box-sizing: border-box;
-            }
-
-            .box-wrap {
-               border: 1px solid #ccc; 
-            }
-
-            .box {
-                min-width: 100px;
-                max-width: 300px;
-                min-height: 100px;
-                margin: 10px 15px;
-                display: inline-block;
-            }
-
-            .box-wrap.rect .box, 
-            .box.rect {
-                min-width: 200px;
-            }
-
-
             .translucency-border {
                 background: aliceblue;
                 border: 10px solid hsla(0, 0%, 100%, .5);
@@ -302,7 +281,6 @@
 
 
             .image-border {
-                width: 200px;
                 padding: 1em;
                 border: 1em solid transparent;
                 background: linear-gradient(white, white) padding-box,
@@ -314,7 +292,6 @@
                             0 / 5em 5em;
             }
             .image-border2 {
-                width: 200px;
                 padding: 1em;
                 border: 16px solid transparent;
                 border-image: 16 repeating-linear-gradient(-45deg,
@@ -343,6 +320,8 @@
                 border-top: .2em solid transparent;
                 border-image: 100% 0 0  linear-gradient(90deg, currentColor 4em, transparent 0);
                 padding-top: 1em;
+                color: red;
+                border-width: 3px;
             }
         </style>
     </head>
@@ -413,10 +392,10 @@
 
         <h6>连续的图像边框(border-image)</h6>
         <div class="box-wrap">
-            信封边框<div class="box image-border"></div>
-            <div class="box image-border2"></div>
-            蚂蚁行军边框<div class="box image-border3"></div>
-            <div class="box image-border4"></div>
+            信封边框<div class="box rect image-border"></div>
+            <div class="box rect image-border2"></div>
+            蚂蚁行军边框<div class="box rect image-border3"></div>
+            脚注<div class="box image-border4">12</div>
         </div>
     </body>
 </html>

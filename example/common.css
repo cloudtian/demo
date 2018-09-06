@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+.box-wrap {
+   border: 1px solid #ccc; 
+}
+
+.box {
+    min-width: 100px;
+    max-width: 300px;
+    min-height: 100px;
+    margin: 10px 15px;
+    display: inline-block;
+}
+
+.box-wrap.rect .box, 
+.box.rect {
+    min-width: 200px;
+}
