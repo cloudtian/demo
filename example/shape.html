@@ -36,6 +36,39 @@
             }
 
 
+            .parallelogram {
+                transform: skewX(-45deg);
+                background-color: #58a;
+                margin-left: 30px;
+            }
+            .parallelogram2::before {
+                position: absolute;
+                content: '';
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: -1; 
+                /*伪元素生成的方块是重叠在内容之上的，通过设置z-index:-1使其堆叠层次推到宿主元素之后。*/
+                background-color: #58a;
+                transform: skew(-45deg);
+                /*
+                利用伪元素以及定位属性产生了一个方块，然后对伪元素设置样式， 并将其放置在其宿主元素的下层。
+                当我们想变形一个元素而不想变形它的内容时就可以用到它
+                */
+            }
+            .parallelogram3::before {
+                position: absolute;
+                content: '';
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: -1; 
+                background-color: #58a;
+                transform: rotate(45deg);
+            }
+            
             
         </style>
     </head>
@@ -51,6 +84,13 @@
             四分之一<div class="box ellipse6"></div>
             糖果按钮<a href="http://simurai.com/archive/buttons/" 
             title="点击查看糖果按钮" target="_blank" class="box candy-pic"></a>            
+        </div>
+
+        <h6>平行四边形</h6>
+        <div class="box-wrap">
+            <div class="box parallelogram min-rect">text</div>
+            <div class="box position-relative parallelogram2 min-rect">text</div>
+            <div class="box position-relative parallelogram3">菱形</div>
         </div>
 
 

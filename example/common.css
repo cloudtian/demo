@@ -18,3 +18,11 @@
 .box.rect {
     min-width: 200px;
 }
+
+.box.min-rect {
+    min-height: 50px;
+}
+
+.position-relative {
+    position: relative;
+}
