@@ -19,6 +19,12 @@
     min-width: 200px;
 }
 
+.box-wrap.square .box, 
+.box.square {
+    width: 200px;
+    height: 200px;
+}
+
 .box.min-rect {
     min-height: 50px;
 }

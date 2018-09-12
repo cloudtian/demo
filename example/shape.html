@@ -69,6 +69,34 @@
                 transform: rotate(45deg);
             }
             
+
+            .diamond {
+                width: 200px;
+                margin-left: 50px;
+                transform: rotate(45deg);
+                overflow: hidden;
+            }
+            .diamond > img {
+                max-width: 100%;
+                transform: rotate(-45deg) scale(1.42);
+                /*
+                通过scale()变形样式来缩放图片时，是以它的中心点进行缩放的。（除非我们额外指定了transform-origin样式）
+                通过width属性来放大图片时，只会以它的左上角为原点进行缩放，从而迫使我们动用额外的负外边距来把图片的位置调整回来
+                */
+            }
+            .diamond2 {
+                clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+                transition: 1s clip-path;   
+            }
+            .diamond2:hover {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                /* 图片在鼠标悬停时平滑地扩展为完整的面积。*/
+                /*
+                clip-path属性可以参与动画，只要我们的动画是在同一种形状函数之间进行的，而且点的数量是相同的。
+                clip-path方法可以很好的适应非正方形的图片。
+                */
+            }
+
             
         </style>
     </head>
@@ -93,6 +121,13 @@
             <div class="box position-relative parallelogram3">菱形</div>
         </div>
 
+        <h6>菱形图片</h6>
+        <div class="box-wrap">
+            <div class="box diamond">
+                <img src="../asset/shape/flower.jpg"/>
+            </div>
+            <img class="box square diamond2" src="../asset/shape/flower2.jpg"/>
+        </div>
 
     </body>
 </html>
