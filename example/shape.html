@@ -146,6 +146,40 @@
                 background-size: 50% 50%;
                 background-repeat: no-repeat;
             }
+            .corner-cut5 {
+                border: 20px solid #58a;
+                border-image: 1 url('data:image/svg+xml,\
+                    <svg xmlns="http://www.w3.org/2000/svg"\
+                        width="3" height="3" fill="%2358a">\
+                        <polygon points="0,1 1,0 2,0 3,1 3,2 2,3 1,3 0,2"/>\
+                    </svg>');
+                background: #58a;
+                /* 背景色和切角边框混为一团了，需要用background-clip来修改这个问题，避免背景色蔓延到边框区域*/
+                background-clip: padding-box;
+                /*
+                * border: 20px solid transparent;
+                * 在不支持border-image的环境下，回退的结果就不仅仅是没有切角效果了。由于背景裁切，它看起来好像
+                * 在容器的边缘和内容之间缺了一圈空隙。为了修复这个问题，我们可以给边框指定与背景一致的颜色。
+                */
+            }
+            .corner-cut6 {
+                background: #58a;
+                clip-path: polygon(
+                    20px 0, calc(100% - 20px) 0, 100% 20px,
+                    100% calc(100% - 20px), calc(100% - 20px) 100%,
+                    20px 100%, 0 calc(100% - 20px), 0 20px
+                );
+                /*
+                * 缺点：如果要改动切角的尺寸，我们需要修改八处。
+                * 优点：改变背景只需要修改一处即可
+                * 最大的好处在于我们可以使用任意类型的背景，甚至可以对替换元素（比如图片）进行裁切。
+                * 这种方法还支持动画效果，我们不仅可以用动画的方式来改变切角的尺寸，还可以彻底变换裁切形状。
+                * 我们只需要为动画的终止状态指定另一条裁切路径即可。
+                * 最大缺点：当内边距不够宽时，他会裁切掉文本。
+                * 渐变方案允许文字溢出并超出切角区域（因为它只是背景图案）
+                * border-image方案则会起到普通边框的作用，令文字折行。
+                */
+            }
         </style>
     </head>
     <body>
@@ -183,6 +217,8 @@
             左下角和右下角<div class="box corner-cut2"></div>
             四个角<div class="box corner-cut3"></div>
             弧形切角<div class="box corner-cut4"></div>
+            内联SVG与border-image方案<div class="box corner-cut5"></div>
+            裁切路径方案<div class="box corner-cut6"></div>
         </div>
 
 
