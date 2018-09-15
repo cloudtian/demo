@@ -241,6 +241,61 @@
             * 只需要把transform-origin改成bottom left或bottom right就可以立即得到左侧倾斜或右侧倾斜的标签页。
             * 缺点：斜边的角度依赖于元素的宽度。
             */
+
+
+            .pie {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                background: yellowgreen;
+                background-image: linear-gradient(to right, transparent 50%, #655 0);
+            }
+            .pie::before {
+                content: '';
+                display: block;
+                margin-left: 50%;
+                height: 100%;
+                background-color: inherit;
+                 /*希望遮盖圆形中的棕色部分，因此指定背景色与其宿主元素一致
+                 * 不要在这里用background: inherit，否则渐变背景也会被继承过来。
+                 */
+                transform-origin: left; 
+                /*希望它绕着圆形的圆心来旋转，对它自己来说这个点就是它的左边缘的中心点，0 50% 或干脆 left*/
+                border-radius: 0 100% 100% 0 / 50%;
+                /* 不希望它呈现出矩形的形状，否则它会突破整个饼图的圆形范围。
+                * 因此要么给.pie设置overflow:hidden样式，要么给这个伪元素指定合适的border-radius属性把它变成一个半圆。
+                */
+
+                animation: spin 3s linear infinite, bg 6s step-end infinite;
+            }
+            @keyframes spin {
+                to { transform: rotate(.5turn); }
+            }
+            @keyframes bg {
+                50% { background: #655; }
+            }
+            .static-pie::before {
+                animation: spin 50s linear infinite, bg 100s step-end infinite;
+                animation-play-state: paused; /* 使动画处于暂停状态 */
+                animation-delay: inherit; /* 继承.static-pie元素上的动画延时值 */
+            }
+            
+            .ratio-inner-pie {
+                position: relative;
+                line-height: 100px;
+                color: transparent;
+                text-align: center;
+            }
+            .ratio-inner-pie::before {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                margin-left: 0; /* 用来覆盖pie::before的margin-left*/
+            }
+
+
         </style>
     </head>
     <body>
@@ -293,5 +348,24 @@
             </div>
         </div>
 
+        <h6>简单的饼图</h6>
+        <div class="box-wrap">
+            基于transform的解决方案<div class="box pie"></div>
+            负延时<div class="box pie static-pie" style="animation-delay: -20s"></div>
+            <div class="box pie static-pie" style="animation-delay: -60s"></div>
+            <!-- 一个负的延时值是合法的。与0s的延时类似，它意味这动画会立即开始播放，但会自动前进到延时值的绝对值处，
+                就好像动画在过去已经播放了指定的时间一样。因此实际效果就是动画跳过指定时间而从中间开始播放了。-->
+            饼图比率写在元素内容中<div class="box pie static-pie ratio-inner-pie">30%</div>
+            <div class="box pie static-pie ratio-inner-pie">80%</div>
+           
+        </div>
+
+        <script>
+            let pies = document.getElementsByClassName('ratio-inner-pie');
+            Array.from(pies).forEach((pie) => {
+                let p = parseFloat(pie.textContent);
+                pie.style.animationDelay = '-' + p + 's';
+            });
+        </script>
     </body>
 </html>
