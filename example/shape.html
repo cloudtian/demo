@@ -296,6 +296,60 @@
             }
 
 
+            .pie-svg-circle {
+                fill: yellowgreen;
+                stroke: #655;
+                stroke-width: 30;
+                stroke-dasharray: 20 10;
+                /*stroke-dasharray是为虚线描边而准备的。
+                * stroke-dasharray: 20 10;这行代码表示让虚线的线段长度为20且间隙长度为10。
+                */
+                /* 圆形的周长C=2πr=2π × 25 ≈ 158
+                */
+            }
+            .pie-svg2 {
+                transform: rotate(-90deg);
+                background: yellowgreen;
+                border-radius: 50%;
+            }
+            .pie-svg-circle2 {
+                fill: yellowgreen;
+                stroke: #655;
+                stroke-width: 50;
+                stroke-dasharray: 0 158;
+                animation: fillup 5s linear infinite;
+            }
+            @keyframes fillup {
+                to { stroke-dasharray: 158 158; }
+            }
+            .pie-svg3 {
+                width: 100px;
+                height: 100px;
+                transform: rotate(-90deg);
+                background: yellowgreen;
+                border-radius: 50%;
+            }
+            .pie-svg-circle3 {
+                fill: yellowgreen;
+                stroke: #655;
+                stroke-width: 32;
+                stroke-dasharray: 38 100; /*可得到比率为38%的扇区*/
+            }
+            .svg-ratio-inner-pie {
+                display: inline-block;
+                width: 100px;
+                height: 100px;
+            }
+            .svg-ratio-inner-pie svg {
+                transform: rotate(-90deg);
+                background: yellowgreen;
+                border-radius: 50%;
+            }
+            .svg-ratio-inner-pie circle {
+                fill: yellowgreen;
+                stroke: #655;
+                stroke-width: 32;
+            }
         </style>
     </head>
     <body>
@@ -357,7 +411,19 @@
                 就好像动画在过去已经播放了指定的时间一样。因此实际效果就是动画跳过指定时间而从中间开始播放了。-->
             饼图比率写在元素内容中<div class="box pie static-pie ratio-inner-pie">30%</div>
             <div class="box pie static-pie ratio-inner-pie">80%</div>
-           
+            SVG解决方案
+            <svg width="100" height="100">
+                <circle class="pie-svg-circle" r="30" cx="50" cy="50"></circle>
+            </svg>
+            <svg class="pie-svg2" width="100" height="100">
+                <circle class="pie-svg-circle2" r="25" cx="50" cy="50"></circle>
+            </svg>
+            <svg class="pie-svg3" viewBox="0 0 32 32">
+                <circle class="pie-svg-circle3" r="16" cx="16" cy="16"></circle>
+            </svg>
+            饼图比率写在元素内容中
+            <div class="svg-ratio-inner-pie">20%</div>
+            <div class="svg-ratio-inner-pie">80%</div>
         </div>
 
         <script>
@@ -366,6 +432,27 @@
                 let p = parseFloat(pie.textContent);
                 pie.style.animationDelay = '-' + p + 's';
             });
+
+            let svgPies = document.getElementsByClassName('svg-ratio-inner-pie');
+            Array.from(svgPies).forEach((pie) => {
+                let p = parseFloat(pie.textContent);
+                let NS = 'http://www.w3.org/2000/svg';
+                let svg = document.createElementNS(NS, 'svg');
+                let circle = document.createElementNS(NS, 'circle');
+                let title = document.createElementNS(NS, 'title');
+                circle.setAttribute('r', 16);
+                circle.setAttribute('cx', 16);
+                circle.setAttribute('cy', 16);
+                circle.setAttribute('stroke-dasharray', p + ' 100');
+                svg.setAttribute('viewBox', '0 0 32 32');
+                title.textContent = pie.textContent;
+                pie.textContent = '';
+                svg.appendChild(title);
+                svg.appendChild(circle);
+                pie.appendChild(svg);
+            });
+
+
         </script>
     </body>
 </html>
