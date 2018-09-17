@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./common.css">
+        <style>
+            .unilateral-shadow {
+                box-shadow: 0px 5px 4px -4px rgba(0,0,0,.5);
+            }
+            .unilateral-shadow2 {
+                box-shadow: 3px 3px 6px -3px black;
+            }
+            .unilateral-shadow3 {
+                box-shadow: 5px 0 5px -5px black,
+                            -5px 0 5px -5px black;
+            }
+
+
+            .irregular-shadow {
+                filter: drop-shadow(2px 2px 4px rgba(0,0,0,.5));
+                /* 任何非透明的部分都会被一视同仁地打上投影 */
+                border: 10px dotted #58a;
+            }
+            .irregular-shadow2 {
+                color: deeppink;
+                border: 2px solid;
+                text-shadow: .1em .2em yellow;
+                filter: drop-shadow(.05em .05em .1em gray);
+                /* 如果你已经用text-shadow在文本上加了投影效果，文本投影还会被drop-shadow()滤镜再加上投影，
+                * 这本质上是给投影打了投影。
+                */
+            }
+
+
+            .dyeing {
+                background: url("../asset/visual-effect/tiger.jpg");
+                transition: .5s filter;
+                filter: sepia(1) saturate(4) hue-rotate(295deg);
+                /*
+                * sepia()给图片增加一种降饱和度的橙黄色染色效果，几乎所有像素的色相值会被收敛到35-30
+                * saturate()滤镜来给每个像素提升饱和度。
+                * hue-ratote()滤镜把每个像素的色相以指定的度数进行偏移。
+                */
+            }
+            .dyeing:hover,
+            .dyeing:focus {
+                filter: none;
+            }
+            .dyeing2 {
+                background: hsl(335, 100%, 50%);
+            }
+            .dyeing2 img {
+                mix-blend-mode: luminosity;
+                /* 滤镜是可动画的，而混合模式则不是 */
+            }
+            .dyeing3 {
+                background-image: url("../asset/visual-effect/tiger.jpg");
+                background-size: cover;
+                background-color: hsl(335, 100%, 50%);
+                background-blend-mode: luminosity;
+                transition: .5s background-color;
+            }
+            .dyeing3:hover {
+                background-color: transparent; 
+            }
+            
+        </style>
+    </head>
+
+    <body>
+        
+        <h6>单侧投影</h6>
+        <div class="box-wrap">
+            底边投影<div class="box unilateral-shadow"></div>
+            邻边投影<div class="box unilateral-shadow2"></div>
+            双侧投影<div class="box unilateral-shadow3"></div>
+        </div>
+
+        <h6>不规则投影</h6>
+        <div class="box-wrap">
+            滤镜效果<div class="box irregular-shadow"></div>
+            <div class="box irregular-shadow2">text has shadow</div>
+        </div>
+
+        <h6>染色效果</h6>
+        <div class="box-wrap">
+            基于滤镜的方案<div class="box dyeing"></div>
+            基于混合模式的方案
+            <div class="box dyeing2">
+                <img src="../asset/visual-effect/tiger.jpg" />
+            </div>
+            <div class="box dyeing3"></div>
+        </div>
+
+    </body>
+</html>
