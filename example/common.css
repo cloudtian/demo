@@ -7,8 +7,7 @@
 }
 
 .box {
-    min-width: 100px;
-    max-width: 300px;
+    width: 100px;
     min-height: 100px;
     margin: 10px 15px;
     display: inline-block;
@@ -16,7 +15,7 @@
 
 .box-wrap.rect .box, 
 .box.rect {
-    min-width: 200px;
+    width: 200px;
 }
 
 .box-wrap.square .box, 
