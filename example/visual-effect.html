@@ -102,11 +102,12 @@
                 background: hsla(0,0%,100%,.3);
                 height: 300px;
                 margin: 50px;
-                overflow: hidden;
+                overflow: hidden; /* 为了效果不超出main的范围 */
                 border-radius: .3em;
                 box-shadow: 0 0 0 1px hsla(0,0%,100%,.3) inset,
 	                        0 .5em 1em rgba(0, 0, 0, 0.6);
 	            text-shadow: 0 1px 1px hsla(0,0%,100%,.3);
+                z-index: 1; /* 为了使伪元素不隐藏到背景图的后面 */
             }
             .ground-grass2 main::before {
                 content: '';
@@ -114,9 +115,9 @@
                 top: 0;
                 right: 0;
                 bottom: 0;
-                left: 0;
-                margin: -30px;
-                z-index: -1;
+                left: 0; /* 伪元素通过绝对定位来继承main的尺寸 */
+                margin: -30px; /* 将伪元素的范围扩大一些 */
+                z-index: -1; /* 为了使伪元素位于main的下面 */
                 filter: blur(20px);
             }
         </style>
