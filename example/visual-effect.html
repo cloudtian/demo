@@ -120,6 +120,57 @@
                 z-index: -1; /* 为了使伪元素位于main的下面 */
                 filter: blur(20px);
             }
+
+
+            .bevel {
+                background: #58a; /* 回退样式 */
+                background: linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.4) 0) no-repeat 100% 0 / 1em 1em,
+                            linear-gradient(-135deg, transparent 0.7em, #58a 0);
+            }
+            .bevel2 {
+                position: relative;
+                background: #58a;
+                background: linear-gradient(-150deg, transparent 1.5em, #58a 0);
+                border-radius: .5em;
+            }
+            .bevel2::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.2) 0, rgba(0,0,0,.4)) no-repeat 100% 0;
+                height: 3em;
+                width: 1.73em;
+                transform: translateY(-1.3em) rotate(-30deg);
+                transform-origin: bottom right;
+                border-bottom-left-radius: inherit;
+                box-shadow: -.2em .2em .3em -.1em rgba(0, 0, 0, .15);
+            }
+            /* 当需要修改折页的大小或折页的角度时，需要修改4-5处并做一些复杂的计算。此时应该用预处理器mixin了
+            * @mixin folded-corner($background, $size, $angle: 30deg) {
+                position: relative;
+                background: $background; // 回退样式
+                background: linear-gradient($angle - 180deg, transparent $size, $background 0);
+                border-radius: .5em;
+
+                $x: $size / sin($angle);
+                $y: $size / cos($angle);
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background: linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,.2) 0, rgba(0,0,0,.4)) 100% 0 no-repeat;
+                    width: $y;
+                    height: $x;
+                    transform: translateY($y - $x) rotate(2*$angle - 90deg);
+                    transform-origin: bottom right;
+                    border-bottom-left-radius: inherit;
+                    box-shadow: -.2em .2em .3em 0.1em rgba(0,0,0,.2);
+                }
+            }
+            */
         </style>
     </head>
 
@@ -172,5 +223,10 @@
             </div>
         </div>
 
+        <h6>折角效果</h6>
+        <div class="box-wrap">
+            45°折角<div class="box bevel"></div>
+            其他角度<div class="box bevel2"></div>
+        </div>
     </body>
 </html>
