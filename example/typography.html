@@ -33,6 +33,22 @@
                 *  结果看起来就不那么理想了。不过对绝大多数字体来说，这种误差基本上是可以忽略的。
                 */
             }
+
+            
+            .text-zebra-stripe {
+                white-space: pre;
+                width: auto;
+                padding: .5em;
+                line-height: 1.5;
+                background: beige;
+                background-image: linear-gradient(rgba(0,0,0,.2) 50%, transparent 0);
+                background-size: auto 3em;
+                background-origin: content-box;
+                /*
+                background-origin可以告诉浏览器在解析background-position时以content box的外沿作为基准
+                而不是默认的padding box外沿。
+                */
+            }
         </style>
     </head>
     <body>
@@ -75,7 +91,15 @@
 
         <h6>文本行的斑马条纹</h6>
         <div class="box-wrap">
-            <div class="box text-zebra-stripe"></div>
+            <div class="box text-zebra-stripe">
+                while (true) {
+                    var d = new Date();
+                    if (d.getDate() == 1 &&
+                        d.getMonth() === 3) {
+                        alert("TROLOLOL");
+                    }
+                }
+            </div>
         </div>
         
         
