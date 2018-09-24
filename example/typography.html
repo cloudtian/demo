@@ -100,6 +100,41 @@
             .ampersand3 {
                 font-family: AmpersandItalic, Helvetica, sans-serif;
             }
+
+
+            .custom-underline {
+                border-bottom: 1px solid gray;
+                line-height: .9;
+                width: 150px;
+                min-height: auto;
+            }
+            .custom-underline2 {
+                box-shadow: 0 -1px gray inset;
+                line-height: .9;
+                width: 150px;
+                min-height: auto;
+            }
+            .custom-underline3 {
+                background: linear-gradient(gray, gray) no-repeat;
+                background-size: 100% 1px;
+                background-position: 0 1.15em;
+                text-shadow: .05em 0 white, -.05em 0 white;
+                width: 150px;
+            }
+            .custom-underline4 {
+                background: linear-gradient(90deg, gray 66%, transparent 0) repeat-x;
+                background-size: .2em 2px;
+                background-position: 0 1em;
+                width: 200px;
+            }
+            .custom-underline5 {
+                background: linear-gradient(-45deg, transparent 40%, gray 0, gray 60%, transparent 0) 0 1em,
+                            linear-gradient(45deg, transparent 40%, gray 0, gray 60%, transparent 0) .1em 1em;
+                background-repeat: repeat-x;
+                background-size: .2em .1em;
+                text-shadow: .05em 0 white, -.05em 0 white;
+                width: 200px;
+            }
         </style>
     </head>
     <body>
@@ -184,5 +219,15 @@
             <div class="box ampersand2">HTML & CSS</div>
             <div class="box ampersand3">HTML & CSS</div>
         </div>
+
+        <h6>自定义下划线</h6>
+        <div class="box-wrap">
+            <div class="box custom-underline">border-bottom</div>
+            <div class="box custom-underline2">box-shadow</div> 
+            <div class="box custom-underline3">background-image</div>    
+            <div class="box custom-underline4">background-image dash</div>
+            <div class="box custom-underline5">background-image wavy</div>        
+        </div>
+
     </body>
 </html>
