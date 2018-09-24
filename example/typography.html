@@ -37,7 +37,6 @@
             
             .text-zebra-stripe {
                 white-space: pre;
-                width: auto;
                 padding: .5em;
                 line-height: 1.5;
                 background: beige;
@@ -48,6 +47,58 @@
                 background-origin可以告诉浏览器在解析background-position时以content box的外沿作为基准
                 而不是默认的padding box外沿。
                 */
+            }
+
+
+            .tab-width pre {
+                tab-size: 2;
+                /*试了下chrome,firefox,IE均无效 😥 ;*/
+            }
+
+
+            .link-font {
+                font-variant-ligatures: common-ligatures
+                                        discretionary-ligatures
+                                        historical-ligatures;
+                /*
+                * font-variant-ligatures专门用来控制连字效果的开启和关闭。
+                如果要启用所有可能的连字，需要同时指定这三个标识符。
+                如果只想开通通用连字：common-ligatures
+                也可以显示地把其他两种连字关闭：no-discretionary-ligatures no-historical-ligatures;
+                */
+            }
+
+
+            .ampersand .amp{
+                font-family: Baskerville, "Goudy Old Style", Garamond, Palatino, serif;
+                font-style: italic;
+            }
+            @font-face {
+                font-family: Ampersand;
+                src: local('Baskerville'),
+                     local('Goudy Old Style'),
+                     local('Palatino'),
+                     local('Book Antiqua');
+                /* local用于指定本地字体的名称。不需要用到任何外部的Web字体，就可以直接在字体队列中指定一款本地字体。 */
+                unicode-range: U+26;
+                /* unicode-range描述符声明想用这几款本地字体来显示哪些字符
+                这个描述符只在@font-face规则内部生效，它可以把字体作用的字符范围限制在一个子集内。
+                它对本地字体和远程字体都是有效的。
+                 */
+            }
+            .ampersand2 {
+                font-family: Ampersand, Helvetica, sans-serif;
+            }
+            @font-face {
+                font-family: AmpersandItalic;
+                src: local('Baskerville-Italic'),
+                     local('GoudyOldStyleT-Italic'),
+                     local('Palatino-Italic'),
+                     local('BookAntiqua-Italic');
+                unicode-range: U+26;
+            }
+            .ampersand3 {
+                font-family: AmpersandItalic, Helvetica, sans-serif;
             }
         </style>
     </head>
@@ -91,17 +142,47 @@
 
         <h6>文本行的斑马条纹</h6>
         <div class="box-wrap">
-            <div class="box text-zebra-stripe">
+            <div class="text-zebra-stripe">
                 while (true) {
                     var d = new Date();
-                    if (d.getDate() == 1 &&
+                    if (d.getDate() === 1 &&
                         d.getMonth() === 3) {
                         alert("TROLOLOL");
                     }
                 }
             </div>
         </div>
+
+        <h6>调整tab的宽度</h6>
+        <div class="box-wrap">
+            <div class="tab-width">
+                <pre>
+                    white (true) {
+                        var d = new Date();
+                        if (d.getDate() === 1 &&
+                            d.getMonth() === 3) {
+                            alert("TROLOLOL");
+                        }
+                    }
+                </pre>
+            </div>
+        </div>
+
+        <h6>连字</h6>
+        <div class="box-wrap">
+            <div class="box link-font">
+                &#xfb01;define,de&#xfb01;ne
+            </div>
+        </div>
         
-        
+        <h6>华丽的&符号</h6>
+        <div class="box-wrap">
+            <div class="box ampersand">
+                HTML & CSS
+                HTML <span class="amp">&amp;</span> CSS
+            </div>
+            <div class="box ampersand2">HTML & CSS</div>
+            <div class="box ampersand3">HTML & CSS</div>
+        </div>
     </body>
 </html>
