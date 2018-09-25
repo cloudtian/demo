@@ -144,6 +144,35 @@
             .shadow-weaken-bg4 dialog::backdrop {
                 background: rgba(0,0,0,.8);
             }
+
+
+            .blur-weaken-bg {
+                transition: .6s filter;
+            }
+            .blur-weaken-bg.de-emphasized {
+                filter: blur(3px);
+                /*两种弱化背景的手法（ 阴影和模糊） 结合起来，
+                有一种实现方法就是使用 brightness() 和 / 或 contrast() 滤镜：
+                filter: blur(3px) contrast(.8) brightness(.8);*/
+                box-shadow: 0 0 0 100vmax rgba(0,0,0,.8);
+                /*通过 CSS 滤镜产生阴影效果，意味着一旦滤镜不被支持，我们将没有任何回退方案。*/
+            }
+
+
+            .scroll-tip ul {
+                overflow: auto;
+                width: 10em;
+                height: 8em;
+                padding: .3em .5em;
+                border: 1px solid silver;
+                background: linear-gradient(white 30%, transparent),
+                            radial-gradient(at 50% 0, rgba(0,0,0,.2), transparent 70%),
+                            linear-gradient(to top, white 30%, transparent) 0 100%,
+                            radial-gradient(at 50% 100%, rgba(0,0,0,.2), transparent 70%) 0 100%;
+                background-repeat: no-repeat;
+                background-size: 100% 50px, 100% 15px, 100% 50px, 100% 15px;;
+                background-attachment: local, scroll, local, scroll;
+            }
         </style>
     </head>
     <body>
@@ -202,7 +231,38 @@
             </div>
         </div>
 
+        <h6>通过模糊来弱化背景</h6>
+        <div class="box-wrap">
+            <div class="box blur-weaken-bg">
+                Bacon Ipsum dolor sit amet...
+                <button id="btn2">showDialog2</button>
+            </div>
+            <dialog id="dialog2">
+                O HAI, I'm a dialog. Click on me to dismiss.
+            </dialog>
+        </div>
+
+        <h6>滚动提示</h6>
+        <div class="box-wrap">
+            <div class="box scroll-tip">
+                <ul>
+                    <li>Ada Catlace</li>
+                    <li>Alan Purring</li>
+                    <li>Schrödingcat</li>
+                    <li>Tim Purrners-Lee</li>
+                    <li>WebKitty</li>
+                    <li>Json</li>
+                    <li>Void</li>
+                    <li>Neko</li>
+                    <li>NaN</li>
+                    <li>Cat5</li>
+                    <li>Vector</li>
+                </ul>
+            </div>
+        </div>
+
         <script>
+           
             window.onload = function () {
                 let btn = document.getElementById('toggleOverlay');
 
@@ -217,6 +277,15 @@
                 let dialog = document.getElementById('dialog');
                 showDialogBtn.onclick = function () {
                     dialog.showModal();
+                }
+
+
+                let showDialogBtn2 = document.getElementById('btn2');
+                let dialog2 = document.getElementById('dialog2');
+                let wrap = document.getElementsByClassName('blur-weaken-bg');
+                showDialogBtn2.onclick = function () {
+                    dialog2.showModal();
+                    wrap[0].classList.add('de-emphasized');
                 }
             }
         </script>
