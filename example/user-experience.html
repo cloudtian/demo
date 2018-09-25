@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="./common.css">
+        <title>用户体验</title>
+        <style>
+            .mouse-cursor {
+               cursor: pointer;
+            }
+            :disabled, [disabled], [aria-disabled="true"] {
+                cursor: not-allowed;
+            }
+            .mouse-cursor2 {
+                cursor: none;
+            }
+
+
+            .click-region button {
+                background: #58a;
+                border: 10px solid transparent; 
+                /* 背景在默认情况下会蔓延到边框的下层，可以使用background-clip属性把背景限制在原本的区域之内 */
+                background-clip: padding-box;
+            }
+            .click-region2 button {
+                background: #58a;
+                border: 10px solid transparent; 
+                box-shadow: 0 0 0 1px rgba(0,0,0,.3) inset;
+                background-clip: padding-box;
+            }
+            .click-region3 button {
+                background: #58a;
+                border: 10px solid transparent; 
+                box-shadow: 0 0 0 1px rgba(0,0,0,.3) inset,
+                            0 .1em .2em -.05em rgba(0,0,0,.5);
+                background-clip: padding-box;
+            }
+            .click-region4 button {
+                position: relative;
+            }
+            .click-region4 button::before {
+                content: '';
+                position: absolute;
+                top: -10px;
+                right: -10px;
+                bottom: -10px;
+                left: -10px;
+                /*伪元素同样可以代表其宿主元素来响应鼠标交互。*/
+            }
+
+
+            .custom-checkbox input[type="checkbox"] + label::before {
+                content: '\a0'; /* 不换行空格 */
+                display: inline-block;
+                vertical-align: .1em;
+                width: .8em;
+                height: .8em;
+                margin-right: .2em;
+                border-radius: .2em;
+                background: silver;
+                text-indent: .15em;
+                line-height: .65;
+            }
+            .custom-checkbox input[type="checkbox"]:checked + label::before {
+                content: '\2713';
+                background: yellowgreen;
+            }
+            .custom-checkbox input[type="checkbox"] {
+                position: absolute;
+                clip: rect(0,0,0,0);
+                /*把原来的复选框以一种不损失可访问性的方式隐藏起来。 
+                这意味着不能使用 display: none， 因为那样会把它从键盘 tab 键切换焦点的队列中完全删除
+                */
+            }
+            .custom-checkbox input[type="checkbox"]:focus + label::before,
+            .custom-checkbox input[type="checkbox"]:hover + label::before {
+                box-shadow: 0 0 .1em .1em #58a;
+            }
+            .custom-checkbox input[type="checkbox"]:disabled + label::before {
+                background: gray;
+                box-shadow: none;
+                color: #555;
+            }
+            /*开关式按钮*/
+            .switch-button input[type="checkbox"] {
+                position: absolute;
+                clip: rect(0,0,0,0);
+            }
+            .switch-button input[type="checkbox"] + label {
+                display: inline-block;
+                padding: .3em .5em;
+                background: #ccc;
+                background-image: linear-gradient(#ddd, #bbb);
+                border: 1px solid rgba(0,0,0,.2);
+                border-radius: .3em;
+                box-shadow: 0 1px white inset;
+                text-align: center;
+                text-shadow: 0 1px 1px white;
+            }
+            .switch-button input[type="checkbox"]:checked + label,
+            .switch-button input[type="checkbox"]:active + label {
+                box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+                border-color: rgba(0,0,0,.3);
+                background: #bbb;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <h6>选用合适的鼠标光标</h6>
+        <div class="box-wrap">
+            <div class="box mouse-cursor" disabled>使用not-allowed光标来提示某个控件已被禁用</div>
+            <div class="box mouse-cursor2">隐藏鼠标光标（公共触摸屏，视频等）</div>
+        </div>
+
+        <h6>扩大可点击区域</h6>
+        <div class="box-wrap">
+            使用border和box-shadow<div class="box click-region"><button disabled>+</button></div>
+            <div class="box click-region2"><button disabled>+</button></div>
+            <div class="box click-region3"><button disabled>+</button></div>
+            使用伪元素<div class="box click-region4"><button disabled>+</button></div>
+        </div>
+
+        <h6>自定义复选框</h6>
+        <div class="box-wrap">
+            <div class="box rect custom-checkbox">
+                <input type="checkbox" id="awesome">
+                <label for="awesome">Awesome!</label>
+            </div>
+            <div class="box rect custom-checkbox">
+                <input type="checkbox" id="awesome2" checked disabled>
+                <label for="awesome2">Awesome!</label>
+            </div>
+            <!--
+            伪类选择符:checked和属性选择符[checked]之间的区别：
+            :checked伪类只在复选框被勾选时才会匹配，不论这个勾选状态是由用户交互触发还是由脚本触发。
+            [checked]是不会根据用户的交互行为进行更新的，因为用户的交互并不会影响到HTML标签上的属性
+            -->
+            开关式按钮
+            <div class="box switch-button">
+                <input type="checkbox" id="awesome3">
+                <label for="awesome3">Awesome!</label>
+            </div>
+            <!--
+                不过，在使用开关式按钮时需慎重。在绝大多数场景下，开关式按钮对可用性有负面作用，
+                因为它们很容易与普通按钮混淆，让人误以为按下它会触发某个动作。
+            -->
+        </div>
+
+    </body>
+</html>
