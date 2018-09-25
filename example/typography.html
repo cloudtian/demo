@@ -267,6 +267,18 @@
                 */
             }
 
+
+            .ring-words {
+                width: 7em;
+                height: 7em;
+            }
+            .ring-words svg {
+                display: block;
+                overflow: visible;
+            }
+            .ring-words3 {
+                transform: rotate(12deg);
+            }
         </style>
     </head>
     <body>
@@ -377,8 +389,51 @@
             <div class="box text-effect7"><span>Glow</span></div>
             文字凸起效果<div class="box text-effect8">CSS3d</div>
             复古风格的排印效果<div class="box text-effect9">RETRO</div>
-        </div>	    
+        </div>	 
+        
+        <h6>环形文字</h6>
+        <div class="box-warp">
+            <div class="box ring-words">
+                <svg viewBox="0 0 100 100">
+                    <path d="M 0,50 a 50,50 0 1,1 0,1 z" fill="none" id="circle"/>
+                    <text>
+                        <textPath xlink:href="#circle">
+                            circular reasoning works because
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+            <div class="box ring-words2 circular">circular reasoning works because</div>
+            <div class="box ring-words3 circular">circular and rotate</div>
+        </div>
 
 
+        <script>
+            let ringWords = document.getElementsByClassName('circular');
+
+            Array.from(ringWords).forEach((el) => {
+                let NS = 'http://www.w3.org/2000/svg';
+                let xlinkNS = 'http://www.w3.org/1999/xlink';
+                let svg = document.createElementNS(NS, 'svg');
+                let circle = document.createElementNS(NS, 'path');
+                let text = document.createElementNS(NS, 'text');
+                let textPath = document.createElementNS(NS, 'textPath');
+                svg.setAttribute('viewBox', '0 0 100 100');
+                svg.setAttribute('overflow', 'visible');
+                
+                circle.setAttribute('d', 'M 0,50 a 50,50 0 1,1 0,1 z');
+                circle.setAttribute('id', 'circle');
+                circle.setAttribute('fill', 'none');
+
+                textPath.textContent = el.textContent;
+                textPath.setAttributeNS(xlinkNS, 'xlink:href', '#circle');
+
+                text.appendChild(textPath);
+                svg.appendChild(circle);
+                svg.appendChild(text);
+                el.textContent = '';
+                el.appendChild(svg);
+            });
+        </script>
     </body>
 </html>
