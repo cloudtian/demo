@@ -135,6 +135,138 @@
                 text-shadow: .05em 0 white, -.05em 0 white;
                 width: 200px;
             }
+
+
+            .text-effect {
+                color: hsl(210, 13%, 30%);
+                background: hsl(210, 13%, 60%);
+                text-shadow: 0 1px 1px hsla(0,0%,100%,.8);
+                /* 在浅色背景上使用深色文字时，在底部加上浅色投影通常效果最佳
+                当处理的文字字号跨度非常大的时候，使用em单位更合适
+                text-shadow: 0 .03em .03em hsla(0,0%,100%,.8);
+                 */
+            }
+            .text-effect2 {
+                background: hsl(210, 13%, 30%);
+                color: hsl(210, 13%, 60%);
+                text-shadow: 0 -1px 1px black;
+                /*把文字和背景的颜色深度对调，变成深色背景浅色文字的情况，则无法使用上述投影样式。
+                在这种情况下，给文字顶部加深色投影是最佳方案。
+                */
+            }
+            .text-effect3 {
+                font-size: 50px;
+                background: deeppink;
+                color: white;
+                text-shadow: 1px 1px black, -1px -1px black,
+                             1px -1px black, -1px 1px black;
+                /*为投影加上不同方向的少量偏移*/
+            }
+            .text-effect4 {
+                font-size: 50px;
+                background: deeppink;
+                color: white;
+                text-shadow: 0 0 1px black, 0 0 1px black,
+                             0 0 1px black, 0 0 1px black,
+                             0 0 1px black, 0 0 1px black;
+                /*重叠多层轻微模糊的投影来模拟描边。
+                不过， 这种方法并不总是可以得到完美的效果， 而且性能消耗较高。 没错， 这是因为用了模糊算法。
+                */
+            }
+            .text-effect5 {
+                font: 500%/1 Rockwell, serif;
+                background: deeppink;
+                color: white;
+                width: 150px;
+            }
+            /* 这些样式可以直接写在svg内标签的属性上
+            .text-effect5 text {
+                fill: currentColor;
+            }
+            .text-effect5 svg {
+                overflow: visible;
+            }
+            .text-effect5 use {
+                stroke: black;
+                stroke-width: 6;
+                stroke-linejoin: round;
+            } 
+            */
+            .text-effect6 {
+                font-size: 30px;
+                background: #203;
+                color: white;
+                transition: 1s;
+            }
+            .text-effect6:hover {
+                color: transparent;
+                text-shadow: 0 0 .1em white, 0 0 .3em white;
+                /*使用两层简单的text-shadow实现的文字外发光效果*/
+            }
+            .text-effect7 {
+                font-size: 30px;
+                background: #203;
+                color: white;
+                transition: 1s;
+            }
+            .text-effect7:hover span {
+                filter: blur(.05em);
+                /*使用CSS滤镜来实现文字的模糊效果*/
+            }
+            .text-effect8 {
+                font-size: 30px;
+                background: #58a;
+                color: white;
+                text-shadow: 0 1px hsl(0, 0%, 85%),
+                             0 2px hsl(0, 0%, 80%),
+                             0 3px hsl(0, 0%, 75%),
+                             0 4px hsl(0, 0%, 70%),
+                             0 5px hsl(0, 0%, 65%),
+                             0 5px 10px black;
+                /*
+                @mixin text-3d($color: white, $depth: 5) {
+                    $shadows: ();
+                    $shadow-color: $color;
+
+                    @for $i from 1 through $depth {
+                        $shadow-color: darken($shadow-color, 10%);
+                        $shadows:append($shadows, 0 ($i * 1px) $shadow-color, comma);
+                    }
+
+                    color: $color;
+                    text-shadow: append($shadows, 0 ($depth * 1px) 10px black, comma)
+                }
+
+                h1 {
+                    @include text-3d(#eee, 4);
+                }
+                */
+            }
+            .text-effect9 {
+                font-size: 25px;
+                background: hsl(0,50%,45%);
+                color: white;
+                text-shadow: 1px 1px black,2px 2px black,
+                             3px 3px black,4px 4px black,
+                             5px 5px black,6px 6px black,
+                             7px 7px black,8px 8px black;
+                /*
+                @function text-retro($color: black, $depth: 8) {
+                    $shadows: (1px 1px $color,);
+                    @for $i from 2 through $depth {
+                        $shadows: append($shadows, ($i * 1px) ($i * 1px) $color, comma);
+                    }
+                    @return $shadows;
+                }
+
+                h1 {
+                    color: white;
+                    background: hsl(0,50%,45%);
+                    text-shadow: text-retro();
+                }
+                */
+            }
+
         </style>
     </head>
     <body>
@@ -228,6 +360,25 @@
             <div class="box custom-underline4">background-image dash</div>
             <div class="box custom-underline5">background-image wavy</div>        
         </div>
+
+        <h6>现实中的文字效果</h6>
+        <div class="box-wrap">
+            凸版印刷效果<div class="box text-effect">“The only way to get rid of a tempatation is to yield to it.”</div>
+            <div class="box text-effect2">“The only way to get rid of a tempatation is to yield to it.”</div>
+            空心字效果<div class="box text-effect3">CSS</div>
+            <div class="box text-effect4">CSS</div>
+            <div class="box text-effect5">
+                <svg width="2em" height="1.2em" overflow="visible">
+                    <use xlink:href="#css" stroke="black" stroke-width="6" stroke-linejoin="round"/>
+                    <text id="css" y="1em" fill="currentColor">CSS</text>
+                </svg>
+            </div>
+            文字外发光效果<div class="box text-effect6">Glow</div>
+            <div class="box text-effect7"><span>Glow</span></div>
+            文字凸起效果<div class="box text-effect8">CSS3d</div>
+            复古风格的排印效果<div class="box text-effect9">RETRO</div>
+        </div>	    
+
 
     </body>
 </html>
