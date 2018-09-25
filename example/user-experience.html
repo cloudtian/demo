@@ -102,6 +102,48 @@
                 border-color: rgba(0,0,0,.3);
                 background: #bbb;
             }
+
+
+            .shadow-weaken-bg .overlay {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: rgba(0,0,0,.8);
+            }
+            .shadow-weaken-bg .lightbox {
+                /* 需要吸引用户注意的元素*/
+                position: absolute;
+                z-index: 1;
+                background: white;
+            }
+            .shadow-weaken-bg2 {
+                position: relative;
+            }
+            .shadow-weaken-bg2::before {
+                content: '';
+                z-index: -1;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: rgba(0,0,0,.8);
+            }
+            .shadow-weaken-bg3 {
+                box-shadow: 0 0 0 9px rgba(0,0,0,.8);
+                /*box-shadow: 0 0 0 50vmax rgba(0,0,0,.8);
+                vmax：1vmanx相当于1vw和1vh两者中的较大值。
+                100vw等于整个视口的宽度，100vh就是视口的高度。
+                满足我们需求的最小值就是50vmax。 由于投影是同时向四个方向扩展的， 这个遮罩层的最终尺寸将是100vmax 加上元素本身的尺寸。
+                1.当我们滚动页面时， 遮罩层的边缘就露出来了
+                2.它只能在视觉上起到引导注意力的作用， 却无法阻止鼠标交互。
+                */
+            }
+            .shadow-weaken-bg4 dialog::backdrop {
+                background: rgba(0,0,0,.8);
+            }
         </style>
     </head>
     <body>
@@ -146,5 +188,37 @@
             -->
         </div>
 
+        <h6>通过阴影来弱化背景</h6>
+        <div class="box-wrap">
+            <div class="box shadow-weaken-bg">
+                <div id="overlay"></div>
+                <button class="lightbox" id="toggleOverlay">显示遮罩</button>
+            </div>
+            伪元素方案<div class="box shadow-weaken-bg2">text</div>
+            box-shadow方案<div class="box shadow-weaken-bg3">text</div>
+            backdrop方案<div class="box shadow-weaken-bg4">
+                <button id="btn">Show dialog</button>
+                <dialog id="dialog">dialog</dialog>
+            </div>
+        </div>
+
+        <script>
+            window.onload = function () {
+                let btn = document.getElementById('toggleOverlay');
+
+                btn.onclick = function () {
+                    let overlay = document.getElementById('overlay');
+                    overlay.classList.toggle('overlay');
+
+                    btn.textContent = overlay.classList.contains('overlay') ? '隐藏遮罩' : '显示遮罩';
+                }
+
+                let showDialogBtn = document.getElementById('btn');
+                let dialog = document.getElementById('dialog');
+                showDialogBtn.onclick = function () {
+                    dialog.showModal();
+                }
+            }
+        </script>
     </body>
 </html>
