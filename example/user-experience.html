@@ -173,6 +173,69 @@
                 background-size: 100% 50px, 100% 15px, 100% 50px, 100% 15px;;
                 background-attachment: local, scroll, local, scroll;
             }
+
+
+            .interactive-image-contrast {
+                position: relative;
+                display: inline-block;
+                /*对<textarea>元素来说，resize属性被默认设置为both，这让它在水平和垂直方法上都是可以调整大小的。
+                不过这个属性实际上适用于任何元素，只要它的overflow属性不是visible
+                */
+            }
+            .interactive-image-contrast > div {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 50%; /*初始宽度*/
+                max-width: 100%;
+                overflow: hidden; /*让它可以裁切图片*/
+                resize: horizontal;
+
+            }
+            .interactive-image-contrast img {
+                display: block;
+                user-select: none;
+            }
+            .interactive-image-contrast > div::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 12px;
+                height: 12px;
+                cursor: ew-resize;
+                padding: 5px;
+                background: linear-gradient(-45deg, white 50%, transparent 0);
+                background-clip: content-box;
+            }
+            .interactive-image-contrast2 {
+                position: relative;
+                display: inline-block;
+            }
+            .interactive-image-contrast2 > div {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 50%;
+                overflow: hidden;
+            }
+            .interactive-image-contrast2 img {
+                display: block;
+                user-select: none;
+            }
+            .interactive-image-contrast2 input {
+                position: absolute;
+                left: 0;
+                bottom: 10px;
+                margin: 0;
+                filter: contrast(.5);
+                mix-blend-mode: luminosity;
+                width: 50%;
+                transform: scale(2);
+                transform-origin: left bottom;
+            }
         </style>
     </head>
     <body>
@@ -261,6 +324,24 @@
             </div>
         </div>
 
+
+        <h6>交互式的图片对比控件</h6>
+        <div class="box-wrap">
+            CSS resize方案
+            <div class="interactive-image-contrast">
+                <div>
+                    <img src="../asset/user-experience/earthquake-before.jpg" alt="before">
+                </div>
+                <img src="../asset/user-experience/earthquake-after.jpg" alt="after">
+            </div>
+            范围输入控件方案
+            <div class="interactive-image-contrast2 image-slider">
+                <img src="../asset/user-experience/earthquake-before.jpg" alt="before">
+                <img src="../asset/user-experience/earthquake-after.jpg" alt="after">
+            </div>
+
+        </div>
+
         <script>
            
             window.onload = function () {
@@ -287,7 +368,27 @@
                     dialog2.showModal();
                     wrap[0].classList.add('de-emphasized');
                 }
+
+
+                let sliders = document.getElementsByClassName('image-slider');
+                Array.from(sliders).forEach((slider) => {
+                    
+                    // 创建附加的div元素，并用它包住第一个图片元素
+                    let div = document.createElement('div');
+                    let img = slider.querySelector('img');
+                    slider.insertBefore(div, img);
+                    div.appendChild(img);
+
+                    // 创建滑块
+                    let range = document.createElement('input');
+                    range.type = 'range';
+                    range.oninput = function () {
+                        div.style.width = this.value + '%';
+                    };
+                    slider.appendChild(range);
+                });
             }
+
         </script>
     </body>
 </html>
