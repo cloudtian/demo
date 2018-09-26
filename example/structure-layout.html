@@ -1,0 +1,38 @@
+<html>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./common.css">
+    <title>结构与布局</title>
+    <style>
+        .intrinsic-sizing figure {
+            border: 1px dashed yellowgreen;
+            max-width: 300px;
+            max-width: min-content;
+            margin: auto;
+            /*
+            min-content，这个关键字将解析为这个容器内部最大的不可断行元素的宽度
+            （及最宽的单词，图片或具有固定宽度的盒元素）
+            */
+        }
+        .intrinsic-sizing figure > img {
+            max-width: inherit;
+        }
+    </style>
+
+    <body>
+        
+        <h6>自适应内部元素</h6>
+        <div class="box-wrap">
+            <div class="intrinsic-sizing">
+                <p>Some text</p>
+                <figure>
+                    <img src="../asset/shape/flower.jpg"/>
+                    <figcaption>
+                        The great Sir Adam Catlace was named after
+                        Countess Ada Lovelace, the first programmer.
+                    </figcaption>
+                </figure>
+                <p>More text</p>
+            </div>
+        </div>
+    </body>
+</html>
