@@ -16,6 +16,112 @@
         .intrinsic-sizing figure > img {
             max-width: inherit;
         }
+
+
+        .table-column-width {
+            width: 500px;
+            height: 300px;
+            border: 1px dashed black;
+        }
+        .table-column-width td {
+            border: 1px solid #ccc;
+        }
+        .table-column-width table {
+            table-layout: fixed;
+            width: 100%;
+        }
+        .table-column-width .no-break {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+
+        .sibling-num-style ul{
+            width: 300px;
+            padding: 0;
+            margin: 0;
+            border: 1px dashed;
+        }
+        .sibling-num-style li {
+            list-style: none;
+            display: inline-block;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .sibling-num-style li:only-child {
+            /* 只有一个列表时的样式 
+            :only-child等效于:first-child:last-child
+            :last-child其实也是一个快捷写法，相当于:nth-last-child(1)
+            */
+            background-color: white;
+            width: 100%;
+        }
+        .sibling-num-style li:first-child:nth-last-child(2),
+        .sibling-num-style li:first-child:nth-last-child(2) ~ li {
+            background-color: pink;
+            width: 49%;
+        }
+        .sibling-num-style li:first-child:nth-last-child(3),
+        .sibling-num-style li:first-child:nth-last-child(3) ~ li {
+            background-color: green;
+            width: 32%;
+        }
+        /*当列表正好包含四项时，命中所有列表项
+        li:first-child:nth-last-child(4),
+        li:first-child:nth-last-child(4) ~ li {}
+
+        定义minxin
+        @minxin n-items($n) {
+            &:first-child:nth-last-child(#{$n}),
+            &:first-child:nth-last-child(#{$n}) ~ & {
+                @content;
+            }
+        }
+        调用时是这样的
+        li {
+            @include n-items(4) {
+                // 属性与值写在这里
+            }
+        }
+        */
+        .sibling-num-style2 ul{
+            width: 300px;
+            padding: 0;
+            margin: 0;
+            border: 1px dashed;
+        }
+        .sibling-num-style2 li {
+            list-style: none;
+            display: inline-block;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .sibling-num-style2 li:first-child:nth-last-child(n+4),
+        .sibling-num-style2 li:first-child:nth-last-child(n+4) ~ li {
+            /* 当列表至少包含四项时，命中所有列表项 
+            n+b这种形式的表达式可以选中从第b个开始的所有子元素
+            :nth-child(n+4)将会选中除了第一第二第三个子元素之外的所有子元素
+            */
+            background-color: pink;
+        }
+        .sibling-num-style2 li:first-child:nth-last-child(-n+4),
+        .sibling-num-style2 li:first-child:nth-last-child(-n+4) ~ li {
+            /* 当列表最多包含四项时，命中所有列表项 
+            -n+b这种形式的表达式可以选中开头的b个元素
+            */
+            background-color: green;
+        }
+        .sibling-num-style2 li:first-child:nth-last-child(n+2):nth-last-child(-n+6),
+        .sibling-num-style2 li:first-child:nth-last-child(n+2):nth-last-child(-n+6) ~ li {
+            /* 组合，列表包含2-6个列表项时命中所有的列表项 */
+            background-color: yellow;
+        }
+
+
+
+
+
     </style>
 
     <body>
@@ -34,5 +140,68 @@
                 <p>More text</p>
             </div>
         </div>
+
+        <h6>精确控制表格列宽</h6>
+        <div class="box-wrap">
+            <div class="table-column-width">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>我们不一样</td>
+                            <td>指定单元格的宽度，则这些单元格就会根据它们内容的长短来分配宽度。也就是说，内容较长的单元格所能分配到的宽度也较多</td>
+                        </tr>
+                        <tr>
+                            <td>表格的每一行都会参与到列宽的计算中，而不仅是第一行</td>
+                            <td>注意，这个表格的列宽分配结果跟上面那个表格不同</td>
+                        </tr>
+                        <tr>
+                            <td>如果我们禁用文本折行行为，那么表格宽度可能会远远超出其容器的宽度</td>
+                            <td class="no-break">而且 text-overflow: ellipsis 对此也无能为力，这一点很遗憾</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h6>根据兄弟元素的数量来确定样式</h6>
+        <div class="box-wrap">
+            <div class="sibling-num-style">
+                <ul id="ul">
+                    <li>item1</li>
+                </ul>
+                <button id="add">Add</button>
+            </div>
+            根据兄弟元素的数量范围来匹配元素
+            <div class="sibling-num-style2">
+                <ul id="ul2">
+                    <li>item1</li>
+                </ul>
+                <button id="add2">Add2</button>
+            </div>
+        </div>
+
+        <script>
+            window.onload = function () {
+                let addBtn = document.getElementById('add');
+                let ul = document.getElementById('ul');
+
+                addBtn.onclick = function () {
+                    let liLength = ul.childElementCount;
+                    let newLi = document.createElement('li');
+                    newLi.textContent = `item${liLength + 1}`;
+                    ul.appendChild(newLi);
+                };
+
+                let addBtn2 = document.getElementById('add2');
+                let ul2 = document.getElementById('ul2');
+
+                addBtn2.onclick = function () {
+                    let liLength = ul2.childElementCount;
+                    let newLi = document.createElement('li');
+                    newLi.textContent = `item${liLength + 1}`;
+                    ul2.appendChild(newLi);
+                };
+            }
+        </script>
     </body>
 </html>
