@@ -209,6 +209,33 @@
                 background: linear-gradient(-45deg, white 50%, transparent 0);
                 background-clip: content-box;
             }
+            .interactive-image-contrast2 {
+                position: relative;
+                display: inline-block;
+            }
+            .interactive-image-contrast2 > div {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 50%;
+                overflow: hidden;
+            }
+            .interactive-image-contrast2 img {
+                display: block;
+                user-select: none;
+            }
+            .interactive-image-contrast2 input {
+                position: absolute;
+                left: 0;
+                bottom: 10px;
+                margin: 0;
+                filter: contrast(.5);
+                mix-blend-mode: luminosity;
+                width: 50%;
+                transform: scale(2);
+                transform-origin: left bottom;
+            }
         </style>
     </head>
     <body>
@@ -349,7 +376,7 @@
                     // 创建附加的div元素，并用它包住第一个图片元素
                     let div = document.createElement('div');
                     let img = slider.querySelector('img');
-                    slider.insertBefore(img, div);
+                    slider.insertBefore(div, img);
                     div.appendChild(img);
 
                     // 创建滑块
@@ -359,11 +386,7 @@
                         div.style.width = this.value + '%';
                     };
                     slider.appendChild(range);
-
                 });
-
-
-
             }
 
         </script>
