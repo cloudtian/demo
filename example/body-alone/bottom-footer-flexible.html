@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>更灵活的解决方案</title>
+    </head>
+    <style> 
+        body {
+            display: flex;
+            flex-flow: column;
+            min-height: 100vh;
+        }
+        header {
+            text-align: center;
+        }
+        main {
+            width: 70em;
+            margin: 0 auto;
+            flex: 1;
+            /*
+            flex实际上是flex-grow,flex-shrink和flex-basis的简写语法。
+            任何元素只要设置了一个大于0的flex值，就将获得可伸缩的特性；
+            flex的值负责控制多个可伸缩元素之间的尺寸分配比例。
+            */
+        }
+        footer {
+            background: #2f2d2d;
+            color: white;
+            padding: 1em calc(50% - 35em);
+        }
+    </style>
+
+    <body>
+        <header>
+            <h1>Site name</h1>
+        </header>
+        <main>
+            <p>Bacon Ipsum dolor sit amet...</p>
+            <p>The other day I posted an image, quite literally as a thought exercise, about how you might accomplish "nested" links. That is, a big container that is linked to one URL that contains a smaller container or text link inside of it that goes to another URL. That's harder than it might seem at first glance. The main reason being that...</p>
+            <p>Eric Meyer once called for more flexible linking, but even that doesn't quite handle a situation where one link is nested inside another.</p>
+            <p>Here's what happens with that HTML, by the way:</p>
+            <p>My first inclination would be to simply not nest the links in the markup, but make them appear nested visually. Some folks replied to the tweet, including Nathan Smith, who shared that same thought: have a relatively positioned parent element and absolutely position both links. The larger one could fill up the whole area and the smaller one could sit on top of it.</p> 
+        </main>
+        <footer>
+            <p>&copy; 2015 No rights reserved.</p>
+            <p>Made with &hearts; by an anonymous pastafarian.</p>
+        </footer>
+    </body>
+</html>

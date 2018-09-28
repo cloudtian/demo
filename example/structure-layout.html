@@ -136,6 +136,112 @@
         }
 
 
+        .vertical-center-bg {
+            background-color: #fcc00f;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        .vertical-center-bg main {
+            background-color: #6c5a57;
+            text-align: center;
+            color: white;
+        }
+        .vertical-center main {
+            width: 200px;
+            height: 100px;
+            margin: auto;
+        }
+        .vertical-center2 {
+            position: relative;
+        }
+        .vertical-center2 main {
+            position: absolute;
+            top: calc(50% - 3em);
+            left: calc(50% - 9em);
+            width: 18em;
+            height: 6em;
+            /* 这个方法最大的局限在于它要求元素的宽高是固定的 */
+        }
+        .vertical-center3 {
+            position: relative;
+        }
+        .vertical-center3 main {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* translate()变形函数中使用百分比，是以这个元素自身的宽度和高度为基准进行换算和移动的
+            这样我们可以彻底解除对固定尺寸的依赖。
+            */
+        }
+        .vertical-center4 main {
+            width: 18em;
+            padding: 1em 1.5em;
+            margin: 50vh auto 0;
+            transform: translateY(-50%);
+            /* 
+            vw是与视口宽度相关的，1vw实际上表示视口宽度的1%；
+            与vw类似，1vh表示视口高度的1%；
+            当视口宽度小于高度时， 1vmin 等于 1vw， 否则等于 1vh。
+            当视口宽度大于高度时， 1vmax 等于 1vw， 否则等于 1vh。
+            */
+            /*这个技巧的实用性是相当有限的，因为它只适用于在视口中居中的场景*/
+        }
+        .vertical-center5 {
+            display: flex;
+        }
+        .vertical-center5 main {
+            margin: auto;
+            /*请注意：当我们使用Flexbox时， margin:auto不仅在水平方向上将元素居中，垂直方向上也是如此。*/
+        }
+        .vertical-center6 {
+            display: flex;
+        }
+        .vertical-center6 main {
+            width: 18em;
+            height: 3em;
+            display: flex;
+            margin: auto;
+            align-items: center;
+            justify-content: center;
+            /* 用Flexbox还可以把匿名的文本框居中 */
+        }
+
+
+        .bottom-footer header {
+            text-align: center;
+        }
+        .bottom-footer main {
+            width: 30em;
+            margin: 0 auto;
+            min-height: calc(20em - 2.5em - 7em);
+        }
+        .bottom-footer footer {
+            background: #2f2d2d;
+            color: white;
+            padding: 1em calc(50% - 15em);
+        }
+        .bottom-footer2 {
+            display: flex;
+            flex-direction: column;
+            min-height: 20em;
+        }
+        .bottom-footer2 header {
+            text-align: center;
+        }
+        .bottom-footer2 main {
+            width: 30em;
+            margin: 0 auto;
+            flex: 1;
+        }
+        .bottom-footer2 footer {
+            background: #2f2d2d;
+            color: white;
+            padding: 1em calc(50% - 15em);
+        }
+        
+
+
 
     </style>
 
@@ -200,8 +306,83 @@
             <div class="bg-content">footer for some text</div>
         </div>
 
-        
+        <h6>垂直居中</h6>
+        <div class="box-wrap">
+            <!-- 
+                水平居中非常简单：
+                行内元素则对它的父元素应用text-align: center
+                块级元素则对它自身应用margin: auto
+            -->
+            <div class="vertical-center-bg vertical-center">
+                <main>
+                    <h4>Am I centered yet?</h4>
+                    <p>Center me, please!</p>
+                </main>
+            </div>
+            基于绝对定位的解决方案
+            <div class="vertical-center-bg vertical-center2">
+                <main>
+                    <h4>Am I centered yet?</h4>
+                    <p>Center me, please!</p>
+                </main>
+            </div>
+            <div class="vertical-center-bg vertical-center3">
+                <main>
+                    <h4>Am I centered yet?</h4>
+                    <p>Center me, please!</p>
+                </main>
+            </div>
+            基于视口单位的解决方案
+            <a href="./body-alone/vertical-center-view.html" target="_blank">更好的体验</a>
+            <div class="vertical-center-bg vertical-center4">
+                <main>
+                    <h4>Am I centered yet?</h4>
+                    <p>Center me, please!</p>
+                </main>
+            </div>
+            基于Flexbox的解决方案
+            <div class="vertical-center-bg vertical-center5">
+                <main>
+                    <h4>Am I centered yet?</h4>
+                    <p>Center me, please!</p>
+                </main>
+            </div>
+            <div class="vertical-center-bg vertical-center6">
+                <main>Center me, please!</main>
+            </div>
+        </div>
 
+        <h6>贴紧底部的页脚</h6>
+        <div class="box-wrap">
+            固定高度的解决方案
+            <a href="./body-alone/bottom-footer-height.html" target="_blank">更好的体验</a>
+            <div class="bottom-footer">
+                <header>
+                    <h1>Site name</h1>
+                </header>
+                <main>
+                    <p>Bacon Ipsum dolor sit amet...</p>
+                </main>
+                <footer>
+                    <p>&copy; 2015 No rights reserved.</p>
+                    <p>Made with &hearts; by an anonymous pastafarian.</p>
+                </footer>
+            </div>
+            更灵活的解决方案
+            <a href="./body-alone/bottom-footer-flexible.html" target="_blank">更好的体验</a>
+            <div class="bottom-footer2">
+                <header>
+                    <h1>Site name</h1>
+                </header>
+                <main>
+                    <p>Bacon Ipsum dolor sit amet...</p>
+                </main>
+                <footer>
+                    <p>&copy; 2015 No rights reserved.</p>
+                    <p>Made with &hearts; by an anonymous pastafarian.</p>
+                </footer>
+            </div>
+        </div>
 
 
 
