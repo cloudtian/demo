@@ -119,6 +119,21 @@
         }
 
 
+        .bg-content {
+            padding: 1em; /* 回退样式增强向后兼容性，对于不支持calc的浏览器也能得到一个相对合理的内边距 */
+            padding: 1em calc(50% - 450px);
+            background: #333;
+            /*
+            别忘了在 calc() 函数中用空白符把 - 和 + 隔起来，否则会产生解析错误！
+            这个看似怪异的规则是为了向前兼容：在未来，calc() 可能会允许使用标识符，
+            而这些标识符本身可能会包含连字符，容易与减号混淆。
+            */
+            color: white;
+            /*
+            如果屏幕的宽度比内容的宽度还要窄，这个解决方案所产生的效果就是没有内边距！
+            不过我们可以通过媒体查询来修复这个问题。
+            */
+        }
 
 
 
@@ -179,6 +194,16 @@
                 <button id="add2">Add2</button>
             </div>
         </div>
+
+        <h6>满幅的背景，定宽的内容</h6>
+        <div class="box-wrap">
+            <div class="bg-content">footer for some text</div>
+        </div>
+
+        
+
+
+
 
         <script>
             window.onload = function () {
