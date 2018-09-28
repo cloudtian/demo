@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="./common.css">
+        <title>过渡与动画</title>
+        <style>
+
+            .easing {
+                background: linear-gradient(#bfe0ef, #fff);
+                border-top-left-radius: .7em;
+                border-top-right-radius: .7em; 
+                height: 300px;
+                width: 80px;
+                margin: 10px;
+                position: relative;
+                display: inline-block;
+            }
+            .easing .grass {
+                height: 10px;
+                width: 100%;
+                background: #a9c933;
+                position: absolute;
+                bottom: 0;
+            }
+            .easing .ball {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: radial-gradient(ellipse at 30% 30%, #fff, #db603f);
+                position: absolute;
+                left: calc(50% - 30px);
+                animation: bounce 5s ease-in forwards;
+                transform: translateY(100px);
+            }
+            @keyframes bounce {
+                60%, 80%, to {
+                    transform: translateY(230px);
+                    animation-timing-function: ease-out;
+                    /*
+                    我们希望下落方向上的调速函数是加速的 （ easeout）， 而弹起方向上是减速的（ ease-in）
+                    */
+                }
+                70% {
+                    transform: translateY(130px);
+                }
+                90% {
+                    transform: translateY(180px);
+                }
+                99% {
+                    transform: translateY(220px);
+                }
+                100% {
+                    transform: translateY(230px);
+                }
+            }
+            /*
+            css提供了一个cubic-bezier()函数，允许我们指定自定义的调速函数。
+            它接受四个函数，分别代表两个控制锚点的坐标值，我们 通过这两个控制锚点来指定想要的贝塞尔曲线。
+            cubic-bezier(x1,y1,x2,y2)，其中(x1,y1)表示第一个控制锚点的坐标，而(x2,y2)是第二个。
+            从逻辑上来说， 只要我们把控制锚点的水平坐标和垂直坐标互换， 就可以得到任何调速函数的反向版本。 
+            举例来说， ease等同于 cubic-bezier(.25,.1,.25,1)， 因此它的反向版本就是 cubicbezier(.1,.25,1,.25)
+            */
+            .easing2 .ball {
+                animation: bounce2 5s cubic-bezier(.1,.25,1,.25) forwards;
+            }
+            @keyframes bounce2 {
+                60%, 80%, to {
+                    transform: translateY(230px);
+                    animation-timing-function: ease;
+                    /*
+                    我们希望下落方向上的调速函数是加速的 （ easeout）， 而弹起方向上是减速的（ ease-in）
+                    */
+                }
+                70% {
+                    transform: translateY(130px);
+                }
+                90% {
+                    transform: translateY(180px);
+                }
+                99% {
+                    transform: translateY(220px);
+                }
+                100% {
+                    transform: translateY(230px);
+                }
+            }
+
+        
+        
+        </style>
+    </head>
+    <body>
+        
+        <h6>缓动效果</h6>
+        <div class="box-wrap">
+            弹跳动画
+            <div class="easing">
+                <div class="ball"></div>
+                <div class="grass"></div>
+            </div>
+            <div class="easing easing2">
+                <div class="ball"></div>
+                <div class="grass"></div>
+            </div>
+        </div>
+
+
+    </body>
+</html>
