@@ -98,9 +98,9 @@
                 transition: .25s transform;
                 /*解决提示框关闭时迟钝问题*/
             }
-            .easing3 input:focus + .callout {
-                /* animation: elastic-grow .5s; */
-            }
+            /* .easing3 input:focus + .callout {
+                animation: elastic-grow .5s;
+            } */
             .easing3 .callout {
                 background: #fae6d4;
                 border-radius: 5px;
@@ -144,8 +144,56 @@
                 background-color: rgb(50%, 50%, 50%);
             }
 
+
+            .frame-by-frame .loader {
+                width: 100px;
+                height: 100px;
+                background: url(../asset/transition-animation/loader.png) 0 0;
+                animation: loader 1s infinite steps(8);
+               
+                /* 把文本隐藏起来 */
+                text-indent: 200%;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            @keyframes loader {
+                to {
+                    background-position: -800px 0;
+                }
+            }
+
+
+            .blink .highlight {
+                animation: .5s blink-smooth 6 alternate;
+                /* animation-direction属性接受的值共有四个
+                normal
+                alternate 反转第偶数个循环周期
+                reverse 反转每一个循环周期
+                alternate-reverse 第奇数个循环周期
+                */
+            }
+            @keyframes blink-smooth {
+                50% {
+                    color: transparent;
+                }
+            }
+            .blink2 .highlight {
+                animation: 1s blink-normal 3 steps(1);
+                /*animation: 1s blink-normal 3 steps(1);什么动静都没有
+                steps(1)本质上等同于steps(1, end)，它表示当前颜色与transparent之间的过渡会在一次步进中完成，于是
+                颜色值的切换只会发生在动画周期的末尾。因此我们会看到起始值贯穿于整个动化周期，而终止值只在动画结尾的无限短的时间点处出现。
+                如果我们改用 steps(1, start)， 结果就完全相反了： 颜色值的切换会发生在动画周期最开始， 
+                于是我们始终只能看到纯透明的文字， 没有任何动画或闪烁效果。
+                */
+            }
+            @keyframes blink-normal {
+                50% {
+                    color: transparent;
+                }
+            }
         
-        
+            
+
         </style>
     </head>
     <body>
@@ -173,6 +221,30 @@
             <div class="box easing4"></div>
         </div>
 
+        <h6>逐帧动画</h6>
+        <div class="box-wrap">
+            <!--
+                GIF动画对大多数情况来说可以完美胜任，但是某些场景下可能会让整体效果大打折扣。
+                1.GIF图片的所能使用的颜色数量被限制在256色。
+                2.GIF不具备Alpha透明的特性
+                3.无法在CSS层修改动画的某些参数。从可移植性的角度来看，这种特性确实不错，但对调试过程来说相当不便。
+            -->
+            <div class="frame-by-frame">
+                <div class="loader">Loading...</div>
+            </div>
+        </div>
+
+        <h6>闪烁效果</h6>
+        <div class="box-wrap">
+            <!--
+                CSS动画可以实现各种类型的闪烁效果
+                对整个元素进行闪烁（通过opacity属性）
+                对文字的颜色进行闪烁（通过color属性）
+                对边框进行闪烁（通过border-color属性）
+            -->
+            <div class="blink">text <span class="highlight">blink</span> other text balabala...</div>
+            <div class="blink2">text <span class="highlight">blink</span> other text balabala...</div>
+        </div>
 
     </body>
 </html>
