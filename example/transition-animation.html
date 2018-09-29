@@ -191,8 +191,44 @@
                     color: transparent;
                 }
             }
-        
-            
+
+
+            .typing h1 {
+                font-family: monospace; /* 等宽字体 */
+                width: 15ch; /*文本的宽度*/
+                /*
+                ch单位是由CSS值与单位（第三版）规范引入的一个新单位，表示“0”字形的宽度。它应该是最不为人知的一个新单位
+                因为在绝大多数场景下，我们并不关心0这个字符显示出来到底有多宽。但对等宽字体来说，这是个例外。
+                在等宽字体中，“0”字形的宽度和其他所有字形的宽度是一样的。
+                */
+                animation: typing 6s steps(15), caret 1s steps(1) infinite;
+                white-space: nowrap;
+                overflow: hidden;
+
+                border-right: .05em solid;
+            }
+            @keyframes typing {
+                from {
+                    width: 0;
+                }
+            }
+            @keyframes caret {
+                50% {
+                    border-color: transparent;
+                }
+            }
+            .typing2 h1 {
+                font-family: monospace;
+                white-space: nowrap;
+                overflow: hidden;
+                border-right: .05em solid transparent;
+                animation: typing 6s, caret2 1s infinite;
+            }
+            @keyframes caret2 {
+                50% {
+                    border-color: currentColor;
+                }
+            }
 
         </style>
     </head>
@@ -246,5 +282,29 @@
             <div class="blink2">text <span class="highlight">blink</span> other text balabala...</div>
         </div>
 
+        <h6>打字动画</h6>
+        <div class="box-wrap">
+            <div class="typing">
+                <h1>CSS is awesome!</h1>
+            </div>
+            <div class="typing2">
+                <h1 class="typing-h1">CSS is awesome, typing h1 !</h1>
+            </div>
+        </div>
+
+
+        <script>
+            window.onload = function () {
+
+                let typings = document.getElementsByClassName('typing-h1');
+                Array.from(typings).forEach((h1) => {
+                    let len = h1.textContent.length,
+                        s = h1.style;
+
+                    s.width = len + 'ch';
+                    s.animationTimingFunction = `steps(${len}), steps(1)`;
+                })
+            }
+        </script>
     </body>
 </html>
