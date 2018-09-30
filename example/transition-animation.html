@@ -230,6 +230,143 @@
                 }
             }
 
+
+            .smooth {
+                width: 150px;
+                height: 150px;
+                background: url('../asset/transition-animation/gold-bridge.jpg');
+                background-size: auto 100%;
+                animation: panoramic 10s linear infinite alternate;
+                animation-play-state: paused;
+            }
+            .smooth:hover,
+            .smooth:focus {
+                animation-play-state: running;
+            }
+            @keyframes panoramic {
+                to {
+                    background-position: 100% 0;
+                }
+            }
+            .smooth.pic2 {
+                background: url('../asset/transition-animation/sea.jpg');  
+                background-size: auto 100%;
+            }
+
+
+            .ring-path {
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                background: #fcc00f;
+                position: relative;
+            }
+            .ring-path img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+            .ring-path .avatar {
+                position: absolute;
+                left: 125px;
+                top: 10px; 
+            }
+            .ring-path.path .avatar {
+                animation: spin 3s infinite linear;
+                transform-origin: 50% 140px;
+            }
+            @keyframes spin {
+                to {
+                    transform: rotate(1turn);
+                }
+            }
+            .ring-path.path2 .avatar > img {
+                animation: inherit;
+                animation-name: spin-reverse;
+            }
+            @keyframes spin-reverse {
+                from {
+                    transform: rotate(1turn);
+                }
+            }
+            .ring-path.path3 .avatar {
+                animation: spin2 3s infinite linear;
+            }
+            .ring-path.path3 .avatar > img {
+                animation: inherit;
+                animation-name: spin-reverse2;
+            }
+            @keyframes spin2 {
+                from {
+                    transform: translate(50%, 140px) rotate(0turn) translate(-50%, -140px);
+                }
+                to {
+                    transform: translate(50%, 140px) rotate(1turn) translate(-50%, -140px); 
+                }
+            }
+            @keyframes spin-reverse2 {
+                from {
+                    transform: translate(50%, 50%) rotate(1turn) translate(-50%, -50%);
+                }
+                to {
+                    transform: translate(50%, 50%) rotate(0turn) translate(-50%, -50%); 
+                }
+            }
+            .ring-path.path4 .avatar {
+                animation: spin3 3s infinite linear;
+            }
+            @keyframes spin3 {
+                from {
+                    transform: translate(50%, 140px)
+                               rotate(0turn)
+                               translate(-50%, -140px)
+                               translate(50%, 50%)
+                               rotate(1turn)
+                               translate(-50%, -50%); 
+                }
+                to {
+                    transform: translate(50%, 140px)
+                               rotate(1turn)
+                               translate(-50%, -140px)
+                               translate(50%, 50%)
+                               rotate(0turn)
+                               translate(-50%, -50%);
+                }
+            }
+            .ring-path.path5 .avatar {
+                animation: spin4 3s infinite linear;
+            }
+            @keyframes spin4 {
+                from {
+                    transform: translateY(140px) translateY(-50%)
+                               rotate(0turn)
+                               translateY(-140px) translateY(50%)
+                               rotate(1turn); 
+                }
+                to {
+                    transform: translateY(140px) translateY(-50%)
+                               rotate(1turn)
+                               translateY(-140px) translateY(50%)
+                               rotate(0turn);
+                }
+            }
+            .ring-path.path6 .avatar {
+                top: calc(50% - 25px);
+                animation: spin5 3s infinite linear;
+            }
+            @keyframes spin5 {
+                from {
+                    transform: rotate(0turn)
+                               translateY(-140px) translateY(50%)
+                               rotate(1turn); 
+                }
+                to {
+                    transform: rotate(1turn)
+                               translateY(-140px) translateY(50%)
+                               rotate(0turn);
+                }
+            }
+
         </style>
     </head>
     <body>
@@ -292,6 +429,57 @@
             </div>
         </div>
 
+        <h6>状态平滑的动画</h6>
+        <div class="box-wrap">
+            <div class="smooth"></div>
+            <div class="smooth pic2"></div>
+        </div>
+
+        <h6>沿环形路径平移的动画</h6>
+        <div class="box-wrap">
+            直接旋转会导致图片内部也旋转
+            <div class="ring-path path">
+                <img src="../asset/transition-animation/cat.jpg" class="avatar">
+            </div>
+            需要两个元素的解决方案
+            <div class="ring-path path2">
+                <div class="avatar">
+                    <img src="../asset/transition-animation/cat.jpg">
+                </div>
+            </div>
+            单个元素的解决方案(逐步优化)<br/>
+            用translate()代替transform-origin
+            <div class="ring-path path3">
+                <div class="avatar">
+                    <img src="../asset/transition-animation/cat.jpg">
+                </div>
+            </div>
+            <!--
+                transform-origin只是一个语法糖而已，实际上你总是可以用translate()来代替它。
+                —— Aryeh Gregor。
+                transform: rotate(30deg);
+                transform-origin: 200px 300px;
+                等效于
+                transform: translate(200px, 300px) rotate(30deg) translate(-200px, -300px);
+                transform-origin: 0 0;
+
+                变形函数并不是彼此独立的。每个变形函数并不是只对这个元素进行变形，而且会把整个元素的坐标系统进行变形，
+                从而影响所有后续的变形操作。这也说明了为什么变形函数的顺序是很重要的，变形属性中不同函数的顺序如果被打乱，可能会产生完全不同的结果。
+            -->
+            使用单个元素
+            <div class="ring-path path4">
+                <img src="../asset/transition-animation/cat.jpg" class="avatar">
+            </div>
+            使用单个元素(优化：去掉水平位移)
+            <div class="ring-path path5">
+                <img src="../asset/transition-animation/cat.jpg" class="avatar">
+            </div>
+            把头像放在圆心并以此作为起点
+            <div class="ring-path path6">
+                <img src="../asset/transition-animation/cat.jpg" class="avatar">
+            </div>
+
+        </div>
 
         <script>
             window.onload = function () {
