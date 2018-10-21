@@ -293,3 +293,49 @@ function replace(pathname) {
     fs.writeFileSync(pathname, str, 'binary');
 }
 ```
+
+## 网络操作
+---
+__[HTTP](https://nodejs.org/api/http.html)__
+- 作为服务端使用时，创建一个HTTP服务器，监听HTTP客户端请求并返回响应。  
+  [作为服务端使用文件](https://github.com/cloudtian/demo/blob/master/node/util/http-server.js)
+- 作为客户端使用时，发起一个HTTP客户端请求，获取服务端响应。  
+  [作为客户端使用文件](https://github.com/cloudtian/demo/blob/master/node/util/http-client.js)
+
+__[HTTPS](https://nodejs.org/api/https.html)__  
+https模块与http模块极为类似，区别在于https模块需要额外处理SSL证书。
+
+__[URL](https://nodejs.org/api/url.html)__  
+处理HTTP请求时url模块使用率超高，因为该模块允许解析URL、生成URL，以及拼接URL。
+```
+                           href 
+---------------------------------------------------------------------
+                            host                  path
+                        --------------- -----------------------
+http:   // urse:pass  @ host.com : 8080 /p/a/t/h  ?query=string #hash
+----       ----------   --------   ---- --------  ------------- -----
+protocol     auth       hostname   port pathname      search     hash
+                                                   ------------
+                                                       query
+```
+
+我们可以使用.parse方法来讲一个URL字符串转换为URL对象。  
+- 传给.parse方法的不一定要是一个完整的URL，
+- .parse方法还支持第二个和第三个布尔类型可选参数。_(第二个参数等于true时，该方法返回的URL对象中，query字段不再是一个字符串，而是一个经过querystring模块转换后的参数对象。第三个参数等于true时，该方法可以正确解析不带协议头的URL)_
+
+.format方法允许将一个URL对象转换为URL字符串。  
+.resolve方法可以用于拼接URL。
+
+__[Query String](https://nodejs.org/api/querystring.html)__  
+querystring模块用于实现URL参数字符串与参数对象的互相转换。
+
+__[Zlib](https://nodejs.org/api/zlib.html)__  
+zlib模块提供了数据压缩和解压的功能。  
+[压缩响应踢数据文件](https://github.com/cloudtian/demo/blob/master/node/util/zlib-response.js)  
+[解压响应体数据文件](https://github.com/cloudtian/demo/blob/master/node/util/zlib-request.js)
+
+__[Net](https://nodejs.org/api/net.html)__  
+net模块可用于创建Socket服务器或Socket客户端。  
+[socket服务器文件](https://github.com/cloudtian/demo/blob/master/node/util/net-server.js)  
+[socket客户端文件](https://github.com/cloudtian/demo/blob/master/node/util/net-client.js)
+
