@@ -213,6 +213,7 @@ graph TD;
   B-->E;
   C-->F;
 ```
+![tree-node](https://github.com/cloudtian/demo/blob/master/node/assert/mermaid.png)
 
 __同步遍历__  
 [同步遍历文件](https://github.com/cloudtian/demo/blob/master/node/util/travel-folder.js)
