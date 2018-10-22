@@ -481,3 +481,173 @@ function spawn(mainModule) {
 spawn(worker.js);
 // 工作进程非正常退出时，守护进程立即重启工作进程。
 ```
+
+
+## 异步编程
+---
+### 回调
+在代码中，异步编程的直接体现就是回调。异步编程依托于回调来实现，但不能说使用了回调后程序就异步化了。
+
+### 代码设计模块
+__函数返回值__：使用一个函数的输出作为另一个函数的输入  
+同步方式下：
+```js
+var output = fn1(fn2('input'));
+// Do something.
+```
+异步方式下：_(由于函数执行结果不是通过返回值，而是通过回调函数传递)_
+```js
+fn2('input', function (output2) {
+    fn2(output2, function (output1) {
+        // Do something
+    });
+});
+```
+
+__遍历数组__：在遍历数组时，使用某个函数依次对数据成员做一些处理也是常见的需求。
+同步方式下：
+```js
+var len = arr.length,
+    i = 0;
+for (; i < len; ++i) {
+    arr[i] = sync(arr[i]);
+}
+// All array items have processed.
+```
+异步方式下：如果数组成员必须一个接一个串行处理
+```js
+(function next(i, len, callback) {
+    if (i < len) {
+        async(arr[i], function (value) {
+            arr[i] = value;
+            next(i + 1, len, callback);
+        });
+    } else {
+        callback();
+    }
+}(0, arr.length, function () {
+    // All array items have processed.
+}));
+```
+异步方式下：如果数组成员可以并行处理，但后续代码仍然需要所有数组成员处理完毕后才能执行的话
+```js
+(function (i, len, count, callback) {
+    for (; i < len; ++i) {
+        (function(i) {
+            async(arr[i], function(value) {
+                arr[i] = value;
+                if (++count === len) {
+                    callback();
+                }
+            });
+        }(i));
+    }
+}(0, arr.length, 0, function () {
+    // All array items have processed.
+}));
+```
+
+__异常处理__：JS自身提供的异常捕获和处理机制——try..catch..，只能用于同步执行的代码。
+```js
+function sync(fn) {
+    return fn();
+}
+try {
+    sync(null);
+    // Do something.
+} catch (err) {
+    console.log('Error: %s', err.message);
+}
+
+// ------------Console------------
+// Error: fn is not a function
+```
+异步函数会打断代码执行路径，异步函数执行过程中以及执行之后产生的异常冒泡到执行路径被打断的位置时，如果一直没有遇到try语句，就作为一个全局异常抛出。
+```js
+function async(fn, callback) {
+    // Code execution path breaks here.
+    setTimeout(function () {
+        callback(fn());
+    }, 0);
+}
+try {
+    async(null, function (data) {
+        // Do something
+    });
+} catch (err) {
+    console.log('Error: %s', err.message);
+}
+/* ------------Console------------
+TypeError: fn is not a function
+    at Timeout._onTimeout (repl:1:64)
+    at ontimeout (timers.js:475:11)
+    at tryOnTimeout (timers.js:310:5)
+    at Timer.listOnTimeout (timers.js:270:5)
+*/
+```
+因为代码执行路径被打断了，我们就需要在异常冒泡到断点之前用try语句把异常捕获住，并通过回调函数传递被捕获的异常。
+```js
+function async(fn, callback) {
+    // Code execution path breaks here.
+    setTimeout(function () {
+        try {
+            callback(null, fn());
+        } catch (err) {
+            callback(err);
+        }
+    }, 0);
+}
+async(null, function (err, data) {
+    if (err) {
+        console.log('Error: %s', err.message);
+    } else {
+         // Do something
+    }
+});
+// ------------Console------------
+// Error: fn is not a function
+```
+
+__[域（Domain）](http://nodejs.org/api/domain.html)__：domain模块可以简化异步代码的异常处理。  
+简单的讲，一个域就是一个JS运行环境，在一个运行环境中，如果一个异常没有被捕获，将作为一个全局异常被抛出。NodeJS通过process对象提供了捕获全局异常的方法。
+```js
+process.on('uncaughtException', function (err) {
+    console.log('Error: %s', err.message);
+});
+setTimeout(function (fn) {
+    fn();
+});
+// ------------Console------------
+// Error: undefined is not a function
+```
+使用domain模块创建一个子域（JS子运行环境）。在子域内运行的代码可以随意抛出异常，而这些异常可以通过子域对象的error事件统一捕获。
+```js
+function async(request, callback) {
+    asyncA(request, function (data) {
+        asyncB(request, function (data) {
+            asyncC(request, function (data) {
+                callback;
+            });
+        });
+    });
+}
+http.createServer(function (request, response) {
+    var d = domain.create();
+
+    d.on('error', function () {
+        response.writeHead(500);
+        response.end();
+    });
+    d.run(function () {
+        async(request, function (data) {
+            response.writeHead(200);
+            response.end(data);
+        });
+    });
+});
+// 使用.create方法创建了一个子域对象，并通过.run方法进入需要在子域中运行的代码的入口点。
+```
+
+__陷阱__：无论是通过process对象的uncaughtException事件捕获到全局异常，还是通过子域对象的error事件捕获到了子域异常，在NodeJS官方文档里都强烈建议处理完异常后立即重启程序，而不是让程序继续运行。按照官方文档的说法，发生异常后的程序处于一个不确定的运行状态，如果不立即退出的话，程序可能会发生严重内存泄漏，也可能表现得很奇怪。  
+但这里需要澄清一些事实。JS本身的throw..try..catch异常处理机制并不会导致内存泄漏，也不会让程序的执行结果出乎意料，但NodeJS并不是存粹的JS。NodeJS里大量的API内部是用C/C++实现的，因此NodeJS程序的运行过程中，代码执行路径穿梭于JS引擎内部和外部，而JS的异常抛出机制可能会打断正常的代码执行流程，导致C/C++部分的代码表现异常，进而导致内存泄漏等问题。  
+因此，使用uncaughtException或domain捕获异常，代码执行路径里涉及到了C/C++部分的代码时，如果不能确定是否会导致内存泄漏等问题，最好在处理完异常后重启程序比较妥当。而使用try语句捕获异常时一般捕获到的都是JS本身的异常，不用担心上述问题。
