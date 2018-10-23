@@ -11,13 +11,12 @@ const MIME = {
 };
 
 function parseUrl (root, url) {
-    let filePath = [];
     if (!url.includes(MULTI_FILE_COMBINE_MARK)) {
         url = url.replace('/', '/??');
     }
 
     let [base, paths] = url.split(MULTI_FILE_COMBINE_MARK);
-    let pathnames = pathname.split(MULTI_FILE_SEPARATE_MARK)
+    let pathnames = paths.split(MULTI_FILE_SEPARATE_MARK)
         .map(item => {
             return path.join(root, base, item);
         });
@@ -55,9 +54,10 @@ function main(argv) {
         server;
 
     server = http.createServer(function (request, response) {
-        var urlInfo = parseUrl(root, request.url);
+        var urlInfo = parseUrl(root, request.url),
+            pathnames = urlInfo.pathnames;
 
-        validateFiles(urlInfo.pathnames, function(err, data) {
+        validateFiles(pathnames, function(err, data) {
             if (err) {
                 response.writeHead(404);
                 response.end(err.message);
@@ -105,9 +105,14 @@ function outputFiles (pathnames, writer) {
 
             // 使用只读数据流简化代码
             var reader = fs.createReadStream(pathnames[i]);
+            var isJsFile = path.extname(pathnames[i]) === '.js';
 
             reader.pipe(writer, {end: false});
-            render.on('end', function () {
+            reader.on('end', function () {
+
+                // 合并JS文件时可以自动在JS文件之间插入一个;来避免一些语法问题
+                writer.write(isJsFile ? '\n;\n' : '\n');
+
                 next(i + 1, len);
             });
         } else {
