@@ -465,3 +465,81 @@ $? | 显示最后命令的退出状态。0表示没有错误，其他任何值�
 
 ### Shell输入/输出重定向
 重定向命令列表
+
+命令 | 说明
+----- | -----
+command > file | 将输出重定向到file
+command < file | 将输入重定向到file
+command >> file | 将输出以追加的方式重定向到file
+n > file | 将文件描述符为n的文件重定向到file
+n >> file | 将文件描述符为n的文件以追加的方式重定向到file
+n >& m | 将输出文件m和n合并
+n <& m | 将输入文件m和n合并
+<< tag | 将开始标记tag和结束标记tag之间的内容作为输入
+
+> 需要注意的是文件描述符 0 通常是标准输入（STDIN），1 是标准输出（STDOUT），2 是标准错误输出（STDERR）。
+
+#### 输出重定向
+重定向一般通过在命令间插入特定的符号来实现。  
+`command > file1`  
+上面这个命令执行command1然后将输出的内容存入file1。  
+注意任何file1内的已经存在的内容将被新内容替代。如果要将新内容添加在文件末尾，请使用`>>`操作符。
+>$ echo "hello world" > file  
+>$ cat file  
+>hello world  
+>$
+
+#### 输入重定向
+`command < file1`  
+这样，本来需要从键盘获取输入的命令会转移到文件读取内容。
+
+#### 重定向深入讲解
+一般情况下，每个 Unix/Linux 命令运行时都会打开三个文件：
+- 标准输入文件(stdin)：stdin的文件描述符为0，Unix程序默认从stdin读取数据。
+- 标准输出文件(stdout)：stdout 的文件描述符为1，Unix程序默认向stdout输出数据。
+- 标准错误文件(stderr)：stderr的文件描述符为2，Unix程序会向stderr流中写入错误信息。  
+
+默认情况下，command > file 将 stdout 重定向到 file，command < file 将stdin 重定向到 file。
+
+- 如果希望 stderr 重定向到 file，可以这样写：  
+  `$ command 2 > file`  
+- 如果希望 stderr 追加到 file 文件末尾，可以这样写：  
+  `$ command 2 >> file`  
+
+2 表示标准错误文件(stderr)。
+
+- 如果希望将 stdout 和 stderr 合并后重定向到 file，可以这样写：  
+  `$ command > file 2>&1` 或者 `$ command >> file 2>&1`
+- 如果希望对 stdin 和 stdout 都重定向，可以这样写：  
+  `$ command < file1 >file2`  
+  command 命令将 stdin 重定向到 file1，将 stdout 重定向到 file2。
+
+#### Here Document
+Here Document 是 Shell 中的一种特殊的重定向方式，用来将输入重定向到一个交互式 Shell 脚本或程序。
+```shell
+command << delimiter
+    document
+delimiter
+```
+它的作用是将两个 delimiter 之间的内容(document) 作为输入传递给 command。
+```shell
+cat << EOF
+欢迎来到
+菜鸟教程
+www.runoob.com
+EOF
+```
+
+> 注意：
+> - 结尾的delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。
+> - 开始的delimiter前后的空格会被忽略掉。
+
+#### /dev/null文件
+如果希望执行某个命令，但又不希望在屏幕上显示输出结果，那么可以将输出重定向到 /dev/null  
+`$ command > /dev/null`
+
+_/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到"禁止输出"的效果。_
+
+如果希望屏蔽 stdout 和 stderr，可以这样写:  
+`$ command > /dev/null 2>&1`  
+_注意：0 是标准输入（STDIN），1 是标准输出（STDOUT），2 是标准错误输出（STDERR）。_
