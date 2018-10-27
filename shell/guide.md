@@ -277,8 +277,8 @@ Shell中的 test 命令用于检查某个条件是否成立，它可以进行数
 > 另外，Shell还提供了与( -a )、或( -o )、非( ! )三个逻辑操作符用于将测试条件连接起来，其优先级为："!"最高，"-a"次之，"-o"最低。
 
 ### Shell 流程控制
-#### if else
-```
+#### if, if else, if else-if else
+```shell
 if condition
 then
     command1
@@ -286,9 +286,124 @@ then
     command3
     ...
     commandN
+elif condition2
+then
+    commandM
+else
+    command
 fi
 ```
 写成一行（适用于终端命令提示符）：
-```
+```shell
 if [ $(ps -ef | grep -c "ssh") -gt 1]; then echo "true"; fi
 ```
+
+#### for循环
+```shell
+for var in item1 item2 ... itemN
+do
+    command1
+    command2
+    ...
+    commandN
+done
+```
+写成一行：
+```shell
+for var in item1 item2 ... itemN; do command; command2... done;
+```
+
+#### while 语句
+while循环用于不断执行一系列命令，也用于从输入文件中读取数据；命令通常为测试条件。
+```shell
+while condition
+do
+    command
+done
+```
+
+#### 无限循环
+```shell
+while :
+do
+    command
+done
+#或者
+while true
+do
+    command
+done
+#或者
+for (( ; ;))
+```
+
+#### until循环
+until 循环执行一系列命令直至条件为 true 时停止。  
+until 循环与 while 循环在处理方式上刚好相反。  
+一般 while 循环优于 until 循环，但在某些时候—也只是极少数情况下，until 循环更加有用。  
+```shell
+until condition
+do 
+    command
+done
+```
+condition 一般为条件表达式，如果返回值为 false，则继续执行循环体内的语句，否则跳出循环。
+
+#### case
+Shell case语句为多选择语句。可以用case语句匹配一个值与一个模式，如果匹配成功，执行相匹配的命令。
+```shell
+case 值 in
+模式1)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+模式2)
+    command1
+    command2
+    ...
+    commandN
+    ;;
+esac
+```
+- 取值后面必须为单词in，每一模式必须以右括号结束。
+- 取值可以为变量或常数。
+- 匹配发现取值符合某一模式后，其间所有命令开始执行直至 ;;
+- 取值将检测匹配的每一个模式。一旦模式匹配，则执行完匹配模式相应命令后不再继续其他模式。如果无一匹配模式，使用星号 * 捕获该值，再执行后面的命令。
+
+#### 跳出循环
+__break__：break命令允许跳出所有循环（终止执行后面的所有循环）。
+__continue__：continue命令与break命令类似，只有一点差别，它不会跳出所有循环，仅仅跳出当前循环。
+
+### Shell 函数
+```shell
+[ function ] fnname [()]
+{
+    action;
+    [return int;]
+}
+
+# 定义函数
+demoFun(){
+    echo "my first shell function"
+}
+demoFun
+```
+- 可以带function fun() 定义，也可以直接fun() 定义,不带任何参数。
+- 参数返回，可以显示加：return 返回，如果不加，将以最后一条命令运行结果，作为返回值。 return后跟数值n(0-255)
+- 函数返回值在调用该函数后通过 $? 来获得。
+> 注意：所有函数在使用前必须定义。这意味着必须将函数放在脚本开始部分，直至shell解释器首次发现它时，才可以使用。调用函数仅使用其函数名即可。
+
+#### 函数参数
+在Shell中，调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数...
+> 注意，$10 不能获取第十个参数，获取第十个参数需要${10}。当n>=10时，需要使用${n}来获取参数。
+参数处理 | 说明
+----- | -----
+$# | 传递到脚本的参数个数
+$* | 以一个单字符串显示所有向脚本传递的参数
+$$ | 脚本运行的当前进程ID号
+$! | 后台运行的最后一个进程的ID号
+$@ | 与$*相同，但是使用时加引号，并在引号中返回每个参数。
+$- | 显示Shell使用的当前项目，与set命令功能相同。
+$? | 显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误。
