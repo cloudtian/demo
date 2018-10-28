@@ -39,7 +39,13 @@
   - [跳出循环](#跳出循环)
 - [Shell函数](#Shell函数)
   - [函数参数](#函数参数)
-- [Shell输入/输出重定向](#Shell输入/输出重定向)
+- [Shell输入/输出重定向](#Shell输入输出重定向)
+  - [输出重定向](#输出重定向)
+  - [输入重定向](#输入重定向)
+  - [重定向深入讲解](#重定向深入讲解)
+  - [Here Document](#here-document)
+  - [/dev/null文件](#devnull文件)
+- [Shell文件包含](#Shell文件包含)
 
 
 
@@ -543,3 +549,12 @@ _/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如
 如果希望屏蔽 stdout 和 stderr，可以这样写:  
 `$ command > /dev/null 2>&1`  
 _注意：0 是标准输入（STDIN），1 是标准输出（STDOUT），2 是标准错误输出（STDERR）。_
+
+### Shell文件包含
+```shell
+. filename # 注意点号(.)和文件名中间有一空格
+
+#或
+
+source filename
+```
