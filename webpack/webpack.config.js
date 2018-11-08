@@ -15,6 +15,15 @@ module.exports = {
     app: './src/index.js',
     print: './src/print.js'
   },
+
+  // 用于开发环境中定位报错的源文件，而不是构建之后的文件
+  devtool: 'inline-source-map',
+
+  // 使用webpack-dev-server
+  devServer: {
+    contentBase: './dist'
+  },
+
   plugins: [
     new WebpackManifestPlugin(),
     new CleanWebpackPlugin(['dist']),
@@ -24,7 +33,8 @@ module.exports = {
   ],
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
   module: {
     rules: [
