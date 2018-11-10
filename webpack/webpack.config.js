@@ -10,10 +10,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 // 用于跟踪模块映射到输出bundle的过程
 const WebpackManifestPlugin = require('webpack-manifest-plugin');
 
+const webpack = require('webpack');
+
+
 module.exports = {
   entry: {
-    app: './src/index.js',
-    print: './src/print.js'
+    app: './src/index.js'
   },
 
   // 用于开发环境中定位报错的源文件，而不是构建之后的文件
@@ -21,7 +23,8 @@ module.exports = {
 
   // 使用webpack-dev-server
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
+    hot: true
   },
 
   plugins: [
@@ -29,7 +32,9 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Output Management'
-    })
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
   output: {
     filename: '[name].bundle.js',
