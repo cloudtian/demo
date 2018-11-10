@@ -4,6 +4,8 @@ import './index.css';
 import catImage from './asset/image/cat.jpg';
 import printMe from './print';
 
+import {cube} from './math';
+
 function component() {
     var element = document.createElement('div');
     var btn = document.createElement('button');
@@ -18,7 +20,11 @@ function component() {
     btn.innerHTML = 'Click me and check the console!';
     btn.onclick = printMe;
 
+    var preEl = document.createElement('pre');
+    preEl.innerHTML = '5 cubed is equal to ' + cube(5);
+
     element.appendChild(btn);
+    element.appendChild(preEl);
   
     return element;
 }

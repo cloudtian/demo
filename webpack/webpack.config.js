@@ -63,5 +63,8 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+
+  // 压缩输出，编译标记，来启用uglifyjs压缩插件
+  mode: 'production'
 }
