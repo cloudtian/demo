@@ -3,7 +3,7 @@ import './asset/font/iconfont.css';
 import './index.css';
 import catImage from './asset/image/cat.jpg';
 
-import {cube} from './math';
+// import {cube} from './math';
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('Looks like we are in development mode!');
