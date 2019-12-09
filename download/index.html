@@ -1,0 +1,125 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>download</title>
+        <style>
+        
+        </style>
+    </head>
+    <body>
+        <h3>下载二进制流文件的几种方式</h3>
+
+        <h4>第一种：直接使用a标签下载</h4>
+        <p>a标签href属性指定下载文件的地址，download属性用于触发下载，也可以指定下载文件的名称</p>
+        <p>书写方式：&lt;a href="/test.xlsx" download&gt;下载&lt;/a&gt;</p>
+        <a href="/test.xlsx" download>下载</a>
+        <a href="/test.xlsx" download="a.xlsx">下载(重命名为a.xlsx)</a>
+
+        <h4>第二种：通过点击按钮后，动态创建a标签进行下载</h4>
+        <p>缺点：1.不能使用post方法 2.不能在启动下载按钮时禁用按钮，下载完毕启用按钮</p>
+        <button type="button" onclick="download()">下载</button>
+
+        <h4>第三种：通过XMLHTTPRequest对象来下载</h4>
+        <p>new一个FileReader()对象，使用其readAsDataURL方法将response转换成base64格式</p>
+        <button type="button" onclick="downloadXHR()">下载</button>
+
+        <h4>第四种：通过fetch请求来下载</h4>
+        <p>使用async函数更简洁，使用URL.createObjectURL来创建DOMString</p>
+        <button type="button" onclick="downloadFetch()">下载</button>
+
+        <h4>使用post方法获取下载文件</h4>
+        <p>读取response中的Content-Disposition属性解析服务器传来的文件名称</p>
+        <button type="button" onclick="downloadFetchPost()">下载</button>
+
+        <script>
+            /**
+             * 使用按钮动态生成a标签
+             * 缺点：1.不能使用post方法 2.不能再启动下载按钮时禁用按钮，下载完毕启用按钮
+             * 
+             **/
+            function download() {
+                var a = document.createElement('a');
+                var filename = 'b.xlsx';
+                a.href = '/test.xlsx';
+                a.download = filename;
+                a.click();
+            }
+
+            /**
+             * 使用XMLHttpRequest对象进行下载
+             **/
+            function downloadXHR () {
+                var xhr = new XMLHttpRequest();
+
+                // 也可以使用post的方式
+                xhr.open('GET', '/test.xlsx', true);
+
+                // 返回类型blob
+                xhr.responseType = 'blob';
+
+                // 定义请求完成的处理函数，请求前也可以增加加载框，禁用下载按钮等逻辑
+                // 请求完成
+                xhr.onload = function () {
+
+                    // 返回200
+                    if (this.status === 200) {
+                        var blob = this.response;
+                        var reader = new FileReader();
+                        
+                        // 转换为base64，可以直接放入a标签的href
+                        reader.readAsDataURL(blob);
+                        reader.onload = function (e) {
+                            // 转换完成，创建一个a标签用于下载
+                            var a = document.createElement('a');
+                            a.download = 'c.xlsx';
+                            a.href = e.target.result;
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            // 如果浏览器中无法触发click，可以先把a标签添加到DOM上然后click后再移除
+                        }
+                    }
+                }
+
+                // 发送ajax请求
+                xhr.send();
+            }
+
+            async function downloadFetch () {
+                const res = await fetch('/test.xlsx', {
+                    method: 'GET'
+                });
+                const blob = await res.blob();
+
+                const a = document.createElement('a');
+
+                // createObjectURL静态方法会创建一个DOMString，其中包含一个表示参数中给出的对象的URL。
+                // 这个新的URL对象表示指定的File对象或Blob对象
+                a.href = window.URL.createObjectURL(blob);
+                a.download = 'd.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            async function downloadFetchPost () {
+
+                // 可以通过name来设置下载文件名，不设置则使用服务器端默认的：/post-method-file?name=aaa.xlsx
+                const res = await fetch('/post-method-file', {
+                    method: 'POST'
+                });
+                const blob = await res.blob();
+
+                const a = document.createElement('a');
+
+                a.href = window.URL.createObjectURL(blob);
+
+                // 使用响应头中的文件名
+                a.download = res.headers.get('Content-Disposition').split(';')[1].split('=')[1];
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        </script>
+    </body>
+</html>
