@@ -42,7 +42,7 @@ app.post('/download/file', (req, res) => {
 // 上传模块
 app.get('/upload/get-files', (req, res) => {
     fs.readdir(path.join(__dirname, 'file'), (err, files) => {
-        console.log(files);
+        console.log('files:', files); // 打印文件名数组
         if (err) {
             res.end('Read file failed!');
             return;
