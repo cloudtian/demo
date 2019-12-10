@@ -293,8 +293,8 @@ let ball = new Ball({
         scaleY: 0.25,
         step: 2,
         color: {
-            from: 'rgba(14, 139, 163, 1)',
-            to: 'rgba(42, 195, 199, 0.8)'
+            from: 'rgb(46, 132, 46, 1)',
+            to: 'rgba(69, 226, 70, 0.8)'
         },
         fluctuations: [0, 30]
     },
