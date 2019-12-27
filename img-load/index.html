@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>image-load</title>
+        <style>
+            .box-wrap {
+                display: flex;
+            }
+            .box-item {
+                border: 1px solid #ddd;
+                width: 300px;
+            }
+            .img-box {
+                width: 300px;
+                height: 225px;
+            }
+            .go-back-top {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 50px;
+                height: 30px;
+                background-color: #19d9e8;
+                color: black;
+                text-decoration: none;
+                text-align: center;
+                line-height: 30px;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+       <p>浏览器下载图片的时候渐进式载入。</p>
+        1. 图像隔行扫描的方式，在gif/png中实现。
+        比如先出奇数行，再出偶数行，造成图像是逐渐变清楚的。<br>
+        <img src="./img/png.png" alt=""><br>
+
+        2. 渐进式扫描的方式，在jpg中实现。
+        让图片先以比较模糊的形式显示，随着图像文件数据不断从网上传过来，图像会逐渐变清晰。<br>
+        <img src="./img/jpg.png" alt=""><br>
+                
+        png效果
+        <div class="box-wrap">
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-yw.png" alt="水母"></div>
+                <p>图片保存方式：压缩，无交错</p>
+            </div>
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-yj.png" alt="水母"></div>
+                <p>图片保存方式：压缩，交错</p>
+            </div>
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-ww.png" alt="水母"></div>
+                <p>图片保存方式：无压缩，无交错</p>
+            </div>
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-wj.png" alt="水母"></div>
+                <p>图片保存方式：无压缩，交错</p>
+            </div>
+        </div>
+
+        jpg效果
+        <div class="box-wrap">
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-normal.jpg" alt="水母"></div>
+                <p>图片保存方式：基线（"标准"）使图像通过逐行扫描的方式显示在屏幕上</p>
+            </div>
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-optimize.jpg" alt="水母"></div>
+                <p>图片保存方式：基线已优化，使用优化的Huffman编码的标准格式</p>
+            </div>
+            <div class="box-item">
+                <div class="img-box"><img src="/img/shuimu-continue.jpg" alt="水母"></div>
+                <p>图片保存方式：连续，使图像通过多次扫描的方式逐渐清晰显示在屏幕上</p>
+            </div>
+        </div>
+
+        
+        <a href="#top" class="go-back-top">Top</a>
+
+        <script>
+            let backTop = document.querySelector('.go-back-top');
+            window.onscroll = function () {
+                if (document.body.scrollTop > 200) {
+                    backTop.style.display = 'inline';
+                } else {
+                    backTop.style.display = 'none';
+                }
+            }
+        </script>
+        
+    </body>
+
+</html>
