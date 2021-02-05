@@ -59,7 +59,7 @@ export default {
       let index = this.grid.findIndex(g => id === g.id);
 
       if (typeof this[`on${fnstr}`] === 'function') {
-        this[`on${fnstr}`](id);
+        this[`on${fnstr}`](g);
         return;
       }
       if (g.url) {
