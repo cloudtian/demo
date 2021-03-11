@@ -6,6 +6,9 @@ const server = http.createServer();
 
 const UPLOAD_DIR = path.resolve(__dirname, '..', 'target'); // 大文件存储目录
 
+const getTempDir = (filename) => {
+    return path.resolve(UPLOAD_DIR, filename.split('.')[0]);
+}
 const resolvePost = req => {
     return new Promise(resolve => {
         let chunk = '';
@@ -29,22 +32,21 @@ const pipeStream = (path, writeStream) => {
     });
 }
 
-const mergeFileChunk = async(filePath, filename, size) => {
-    const chunkDir = path.resolve(UPLOAD_DIR, filename);
+const mergeFileChunk = async (filePath, filename, size) => {
+    const chunkDir = getTempDir(filename);
     const chunkPaths = await fse.readdir(chunkDir); // 返回目录中文件的名称的数组
-    chunkPaths.sort((a, b) => Number(a.split('-')[1]) - Number(b.split('-')[1]));
-    await Promise.all(
-        chunkPaths.map((chunkPath, index) => 
-            pipeStream(
-                path.resolve(chunkDir, chunkPath),
-                fse.createWriteStream(filePath, {
-                    flags: 'r+',
-                    start: index * size,
-                    end: (index + 1) * size
-                })
-            )
-        )
-    )
+    chunkPaths.sort((a, b) => Number(a.split('-')[1]) - Number(b.split('-')[1])); // 排序
+    const chunkList = chunkPaths.map((chunkPath, index) => {
+        return pipeStream(
+            path.resolve(chunkDir, chunkPath),
+            fse.createWriteStream(filePath, {
+                flags: 'r+',
+                start: index * size,
+                end: (index + 1) * size
+            })
+        );
+    });
+    await Promise.all(chunkList);
     fse.rmdirSync(chunkDir);//合并后删除保存切片的目录
 };
 
@@ -59,10 +61,10 @@ server.on('request', async (req, res) => {
 
     console.log(req.url);
     if (req.url === '/merge') {
-        debugger;
         const data = await resolvePost(req);
         const {filename, size} = data;
         const filePath = path.resolve(UPLOAD_DIR, `${filename}`);
+        await fse.writeFile(filePath, ''); // 需要新建文件
         await mergeFileChunk(filePath, filename, size);
         res.end(JSON.stringify({
             code: 0,
@@ -78,7 +80,7 @@ server.on('request', async (req, res) => {
         const [chunk] = files.chunk;
         const [hash] = fields.hash;
         const [filename] = fields.filename;
-        const chunkDir = path.resolve(UPLOAD_DIR, filename.split('.')[0]);
+        const chunkDir = getTempDir(filename);
 
         // 切片目录不存在，创建切片目录
         if (!fse.existsSync(chunkDir)) {

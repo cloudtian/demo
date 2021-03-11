@@ -48,15 +48,18 @@ export default {
           formData.append('filename', this.file.name);
           return {formData};
       }).map(async ({formData}) => {
-          request({
+          await request({
             url: 'http://localhost:8009',
             data: formData
           });
       });
 
-      await Promise.all(requestList);
-      debugger;
-      await this.mergeRequest(); 
+      // Promise.all(requestList).then(() => {
+      //   this.mergeRequest();
+      // });
+
+      await Promise.all(requestList); 
+      await this.mergeRequest();
     },
 
     async mergeRequest () {
