@@ -12,6 +12,6 @@
     "@vue/compiler-sfc": "^3.0.4",
     "fs-extra": "^9.1.0",
     "multiparty": "^4.2.2",
-    "vite": "^1.0.0-rc.13"
+    "vite": "^2.9.13"
   }
 }
